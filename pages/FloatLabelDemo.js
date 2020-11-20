@@ -8,7 +8,7 @@ import { Calendar } from 'primereact/calendar';
 import { Chips } from 'primereact/chips';
 import { Dropdown } from 'primereact/dropdown';
 import { MultiSelect } from 'primereact/multiselect';
-import { CountryService } from '../service/CountryService';
+import { CountryService } from '../src/service/CountryService';
 
 export const FloatLabelDemo = () => {
 
@@ -138,3 +138,4 @@ export const FloatLabelDemo = () => {
     )
 }
 
+export default FloatLabelDemo;

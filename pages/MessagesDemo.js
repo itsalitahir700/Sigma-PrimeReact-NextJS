@@ -5,7 +5,7 @@ import { Message } from 'primereact/message';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 
-export const MessagesDemo = () => {
+const MessagesDemo = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const toast = useRef();
@@ -102,3 +102,5 @@ export const MessagesDemo = () => {
         </div>
     );
 }
+
+export default MessagesDemo;

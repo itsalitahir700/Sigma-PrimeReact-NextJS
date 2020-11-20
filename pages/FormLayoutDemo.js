@@ -4,7 +4,7 @@ import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Dropdown } from 'primereact/dropdown';
 
-export const FormLayoutDemo = () => {
+const FormLayoutDemo = () => {
 
     const [dropdownItem, setDropdownItem] = useState(null);
     const dropdownItems = [
@@ -123,3 +123,5 @@ export const FormLayoutDemo = () => {
         </div>
     )
 }
+
+export default FormLayoutDemo;

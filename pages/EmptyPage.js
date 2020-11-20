@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const EmptyPage = () => {
+const EmptyPage = () => {
 
     return (
         <div className="p-grid">
@@ -13,3 +13,5 @@ export const EmptyPage = () => {
         </div>
     );
 }
+
+export default EmptyPage;

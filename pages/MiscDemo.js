@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ProgressBar } from 'primereact/progressbar';
 import { Button } from 'primereact/button';
 
-export const MiscDemo = () => {
+const MiscDemo = () => {
 
     const [value, setValue] = useState(0);
     const interval = useRef(null);
@@ -100,3 +100,5 @@ export const MiscDemo = () => {
         </div>
     )
 }
+
+export default MiscDemo;

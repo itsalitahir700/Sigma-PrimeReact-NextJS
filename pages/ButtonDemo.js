@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'primereact/button';
 import { SplitButton } from 'primereact/splitbutton';
 
-export const ButtonDemo = () => {
+const ButtonDemo = () => {
 
     const items = [
         {
@@ -144,3 +144,5 @@ export const ButtonDemo = () => {
         </div>
     )
 }
+
+export default ButtonDemo;

@@ -5,9 +5,9 @@ import { Dropdown } from 'primereact/dropdown';
 import { Rating } from 'primereact/rating';
 import { PickList } from 'primereact/picklist';
 import { OrderList } from 'primereact/orderlist';
-import { ProductService } from '../service/ProductService';
+import { ProductService } from '../src/service/ProductService';
 
-export const ListDemo = () => {
+const ListDemo = () => {
 
     const listValue = [
         { name: 'San Francisco', code: 'SF' },
@@ -151,3 +151,5 @@ export const ListDemo = () => {
         </div>
     )
 }
+
+export default ListDemo;

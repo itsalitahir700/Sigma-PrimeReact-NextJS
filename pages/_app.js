@@ -3,11 +3,11 @@ import classNames from 'classnames';
 // import { Route } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 
-import { AppTopbar } from './AppTopbar';
-import { AppFooter } from './AppFooter';
-import { AppMenu } from './AppMenu';
-import { AppProfile } from './AppProfile';
-// import { AppConfig } from './AppConfig';
+import { AppTopbar } from '../src/AppTopbar';
+import { AppFooter } from '../src/AppFooter';
+import { AppMenu } from '../src/AppMenu';
+import { AppProfile } from '../src/AppProfile';
+import { AppConfig } from '../src/AppConfig';
 
 // import { Dashboard } from './components/Dashboard';
 // import { ButtonDemo } from './components/ButtonDemo';
@@ -41,19 +41,19 @@ import { AppProfile } from './AppProfile';
 
 // import PrimeReact from 'primereact/utils';
 
-// import 'primereact/resources/themes/saga-blue/theme.css';
-// import 'primereact/resources/primereact.min.css';
-// import 'primeicons/primeicons.css';
-// import 'primeflex/primeflex.css';
-// import 'prismjs/themes/prism-coy.css';
-// import '@fullcalendar/core/main.css';
-// import '@fullcalendar/daygrid/main.css';
-// import '@fullcalendar/timegrid/main.css';
-// import './layout/flags/flags.css';
-// import './layout/layout.scss';
-// import './App.scss';
+import 'primereact/resources/themes/saga-blue/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
+import 'primeflex/primeflex.css';
+import 'prismjs/themes/prism-coy.css';
+import '@fullcalendar/core/main.css';
+import '@fullcalendar/daygrid/main.css';
+import '@fullcalendar/timegrid/main.css';
+import '../src/layout/flags/flags.css';
+import '../src/layout/layout.scss';
+import '../src/App.scss';
 
-const App = () => {
+const App = ({ Component, pageProps }) => {
 
     const [layoutMode, setLayoutMode] = useState('static');
     const [layoutColorMode, setLayoutColorMode] = useState('dark')
@@ -63,33 +63,33 @@ const App = () => {
     const [inputStyle, setInputStyle] = useState('outlined');
     const [ripple, setRipple] = useState(false);
     const sidebar = useRef();
-    // let menuClick = false;
+    let menuClick = false;
 
-    // useEffect(() => {
-    //     if (mobileMenuActive) {
-    //         addClass(document.body, 'body-overflow-hidden');
-    //     }
-    //     else {
-    //         removeClass(document.body, 'body-overflow-hidden');
-    //     }
-    // }, [mobileMenuActive]);
+    useEffect(() => {
+        if (mobileMenuActive) {
+            addClass(document.body, 'body-overflow-hidden');
+        }
+        else {
+            removeClass(document.body, 'body-overflow-hidden');
+        }
+    }, [mobileMenuActive]);
 
-    // const onInputStyleChange = (inputStyle) => {
-    //     setInputStyle(inputStyle);
-    // }
+    const onInputStyleChange = (inputStyle) => {
+        setInputStyle(inputStyle);
+    }
 
-    // const onRipple = (e) => {
-    //     PrimeReact.ripple = e.value;
-    //     setRipple(e.value)
-    // }
+    const onRipple = (e) => {
+        PrimeReact.ripple = e.value;
+        setRipple(e.value)
+    }
 
-    // const onLayoutModeChange = (mode) => {
-    //     setLayoutMode(mode)
-    // }
+    const onLayoutModeChange = (mode) => {
+        setLayoutMode(mode)
+    }
 
-    // const onColorModeChange = (mode) => {
-    //     setLayoutColorMode(mode)
-    // }
+    const onColorModeChange = (mode) => {
+        setLayoutColorMode(mode)
+    }
 
     const onWrapperClick = (event) => {
         if (!menuClick) {
@@ -132,41 +132,41 @@ const App = () => {
         {
             label: 'UI Kit', icon: 'pi pi-fw pi-sitemap',
             items: [
-                { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/formlayout' },
-                { label: 'Input', icon: 'pi pi-fw pi-check-square', to: '/input' },
-                { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', to: '/floatlabel' },
-                { label: 'Button', icon: 'pi pi-fw pi-mobile', to: '/button' },
-                { label: 'Table', icon: 'pi pi-fw pi-table', to: '/table' },
-                { label: 'List', icon: 'pi pi-fw pi-list', to: '/list' },
-                { label: 'Tree', icon: 'pi pi-fw pi-share-alt', to: '/tree' },
-                { label: 'Panel', icon: 'pi pi-fw pi-tablet', to: '/panel' },
-                { label: 'Overlay', icon: 'pi pi-fw pi-clone', to: '/overlay' },
-                { label: 'Menu', icon: 'pi pi-fw pi-bars', to: '/menu' },
-                { label: 'Message', icon: 'pi pi-fw pi-comment', to: '/messages' },
-                { label: 'File', icon: 'pi pi-fw pi-file', to: '/file' },
-                { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', to: '/chart' },
-                { label: 'Misc', icon: 'pi pi-fw pi-circle-off', to: '/misc' },
+                { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/FormLayoutDemo' },
+                { label: 'Input', icon: 'pi pi-fw pi-check-square', to: '/InputDemo' },
+                { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', to: '/FloatLabelDemo' },
+                { label: 'Button', icon: 'pi pi-fw pi-mobile', to: '/ButtonDemo' },
+                { label: 'Table', icon: 'pi pi-fw pi-table', to: '/TableDemo' },
+                { label: 'List', icon: 'pi pi-fw pi-list', to: '/ListDemo' },
+                { label: 'Tree', icon: 'pi pi-fw pi-share-alt', to: '/TreeDemo' },
+                { label: 'Panel', icon: 'pi pi-fw pi-tablet', to: '/PanelDemo' },
+                { label: 'Overlay', icon: 'pi pi-fw pi-clone', to: '/OverlayDemo' },
+                { label: 'Menu', icon: 'pi pi-fw pi-bars', to: '/MenuDemo' },
+                { label: 'Message', icon: 'pi pi-fw pi-comment', to: '/MessagesDemo' },
+                { label: 'File', icon: 'pi pi-fw pi-file', to: '/FileDemo' },
+                { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', to: '/ChartDemo' },
+                { label: 'Misc', icon: 'pi pi-fw pi-circle-off', to: '/MiscDemo' },
             ]
         },
         {
             label: 'Utilities', icon: 'pi pi-fw pi-globe',
             items: [
-                { label: 'Display', icon: 'pi pi-fw pi-desktop', to: '/display' },
-                { label: 'Elevation', icon: 'pi pi-fw pi-external-link', to: '/elevation' },
-                { label: 'Flexbox', icon: 'pi pi-fw pi-directions', to: '/flexbox' },
-                { label: 'Icons', icon: 'pi pi-fw pi-search', to: '/icons' },
-                { label: 'Grid System', icon: 'pi pi-fw pi-th-large', to: '/grid' },
-                { label: 'Spacing', icon: 'pi pi-fw pi-arrow-right', to: '/spacing' },
-                { label: 'Typography', icon: 'pi pi-fw pi-align-center', to: '/typography' },
-                { label: 'Text', icon: 'pi pi-fw pi-pencil', to: '/text' },
+                { label: 'Display', icon: 'pi pi-fw pi-desktop', to: '/DisplayDemo' },
+                { label: 'Elevation', icon: 'pi pi-fw pi-external-link', to: '/ElevationDemo' },
+                { label: 'Flexbox', icon: 'pi pi-fw pi-directions', to: '/FlexBoxDemo' },
+                { label: 'Icons', icon: 'pi pi-fw pi-search', to: '/IconsDemo' },
+                { label: 'Grid System', icon: 'pi pi-fw pi-th-large', to: '/GridDemo' },
+                { label: 'Spacing', icon: 'pi pi-fw pi-arrow-right', to: '/SpacingDemo' },
+                { label: 'Typography', icon: 'pi pi-fw pi-align-center', to: '/TypographyDemo' },
+                { label: 'Text', icon: 'pi pi-fw pi-pencil', to: '/TextDemo' },
             ]
         },
         {
             label: 'Pages', icon: 'pi pi-fw pi-clone',
             items: [
-                { label: 'Crud', icon: 'pi pi-fw pi-user-edit', to: '/crud' },
-                { label: 'Calendar', icon: 'pi pi-fw pi-calendar-plus', to: '/calendar' },
-                { label: 'Empty Page', icon: 'pi pi-fw pi-circle-off', to: '/empty' }
+                { label: 'Crud', icon: 'pi pi-fw pi-user-edit', to: '/Crud' },
+                { label: 'Calendar', icon: 'pi pi-fw pi-calendar-plus', to: '/Calendar' },
+                { label: 'Empty Page', icon: 'pi pi-fw pi-circle-off', to: '/EmptyPage' }
             ]
         },
         {
@@ -214,23 +214,23 @@ const App = () => {
                 }
             ]
         },
-        { label: 'Documentation', icon: 'pi pi-fw pi-question', command: () => { window.location = "#/documentation" } },
-        { label: 'View Source', icon: 'pi pi-fw pi-search', command: () => { window.location = "https://github.com/primefaces/sigma-react" } }
+        // { label: 'Documentation', icon: 'pi pi-fw pi-question', command: () => { window.location = "#/documentation" } },
+        { label: 'View Source', icon: 'pi pi-fw pi-search', command: () => { window.location = "https://github.com/schneidersteve/sigma-react-nextjs" } }
     ];
 
-    // const addClass = (element, className) => {
-    //     if (element.classList)
-    //         element.classList.add(className);
-    //     else
-    //         element.className += ' ' + className;
-    // }
+    const addClass = (element, className) => {
+        if (element.classList)
+            element.classList.add(className);
+        else
+            element.className += ' ' + className;
+    }
 
-    // const removeClass = (element, className) => {
-    //     if (element.classList)
-    //         element.classList.remove(className);
-    //     else
-    //         element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-    // }
+    const removeClass = (element, className) => {
+        if (element.classList)
+            element.classList.remove(className);
+        else
+            element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+    }
 
     const isDesktop = () => {
         if (typeof window !== 'undefined') {
@@ -279,15 +279,16 @@ const App = () => {
                         <img alt="Logo" src={logo} />
                     </div>
                     <AppProfile />
-                    {/* <AppMenu model={menu} onMenuItemClick={onMenuItemClick} /> */}
+                    <AppMenu model={menu} onMenuItemClick={onMenuItemClick} />
                 </div>
             </CSSTransition>
 
-            {/* <AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange}
+            <AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange}
                 layoutMode={layoutMode} onLayoutModeChange={onLayoutModeChange} layoutColorMode={layoutColorMode} onColorModeChange={onColorModeChange} />
 
             <div className="layout-main">
-                <Route path="/" exact component={Dashboard} />
+              <Component {...pageProps} />
+            {/* <Route path="/" exact component={Dashboard} />
                 <Route path="/formlayout" component={FormLayoutDemo} />
                 <Route path="/input" component={InputDemo} />
                 <Route path="/floatlabel" component={FloatLabelDemo} />
@@ -313,8 +314,8 @@ const App = () => {
                 <Route path="/calendar" component={Calendar} />
                 <Route path="/crud" component={Crud} />
                 <Route path="/empty" component={EmptyPage} />
-                <Route path="/documentation" component={Documentation} />
-            </div> */}
+                <Route path="/documentation" component={Documentation} /> */}
+            </div>
 
             <AppFooter />
 
@@ -322,5 +323,9 @@ const App = () => {
     );
 
 }
+
+// function App({ Component, pageProps }) {
+//   return <Component {...pageProps} />
+// }
 
 export default App;

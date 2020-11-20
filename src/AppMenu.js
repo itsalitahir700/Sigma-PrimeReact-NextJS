@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import Link from 'next/link';
 import { CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
 
@@ -51,9 +51,9 @@ const AppSubmenu = (props) => {
 
         if (item.to) {
             return (
-                <NavLink activeClassName="active-route" to={item.to} onClick={(e) => onMenuItemClick(e, item, i)} exact target={item.target}>
-                    {content}
-                </NavLink>
+                <Link href={item.to}>
+                    <a>{content}</a>
+                </Link>
             )
         }
         else {

@@ -12,7 +12,7 @@ import { MegaMenu } from 'primereact/megamenu';
 import { PanelMenu } from 'primereact/panelmenu';
 
 
-export const MenuDemo = () => {
+const MenuDemo = () => {
 
     const menu = useRef(null);
     const contextMenu = useRef(null);
@@ -545,3 +545,5 @@ export const MenuDemo = () => {
         </div>
     )
 }
+
+export default MenuDemo;

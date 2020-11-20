@@ -1,7 +1,7 @@
 import React from 'react';
 import { Chart } from 'primereact/chart';
 
-export const ChartDemo = () => {
+const ChartDemo = () => {
 
     const lineData = {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -167,3 +167,5 @@ export const ChartDemo = () => {
         </div>
     )
 }
+
+export default ChartDemo;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from 'primereact/button';
 import { Panel } from 'primereact/panel';
 
-export const GridDemo = () => {
+const GridDemo = () => {
 
     const [columns, setColumns] = useState([0, 1, 2, 3, 4, 5]);
 
@@ -393,3 +393,5 @@ export const GridDemo = () => {
         </div>
     )
 }
+
+export default GridDemo;

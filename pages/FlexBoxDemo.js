@@ -1,9 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Button } from 'primereact/button';
-import { CodeHighlight } from '../components/CodeHighlight';
+import CodeHighlight from './CodeHighlight';
 
-export const FlexBoxDemo = () => {
+const FlexBoxDemo = () => {
 
     return (
         <div className="p-grid flexbox-demo">
@@ -12,7 +12,7 @@ export const FlexBoxDemo = () => {
                 <p>Easily manage the layout of your components with the responsive FlexBox utilities. If you require a
                     utility to manage the layout of your application,
                     refer to the
-                    <Link to="/grid">Grid System</Link>
+                    <Link href="/GridDemo"><a>Grid System</a></Link>
                     instead.
                 </p>
 
@@ -530,7 +530,7 @@ export const FlexBoxDemo = () => {
                 </ul>
 
                 <h5>Margin with FlexBox</h5>
-                <p>When combined with <Link to="/setup">spacing utilities</Link>, flexbox offers endless possibilities.</p>
+                <p>When combined with <Link href="/setup"><a>spacing utilities</a></Link>, flexbox offers endless possibilities.</p>
                 <h6>Horizontal Spacing</h6>
 
 <CodeHighlight>
@@ -565,3 +565,5 @@ export const FlexBoxDemo = () => {
         </div>
     )
 }
+
+export default FlexBoxDemo;

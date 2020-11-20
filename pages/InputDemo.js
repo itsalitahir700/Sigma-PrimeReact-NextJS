@@ -17,9 +17,9 @@ import { MultiSelect } from 'primereact/multiselect';
 import { SelectButton } from 'primereact/selectbutton';
 import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
-import { CountryService } from '../service/CountryService';
+import { CountryService } from '../src/service/CountryService';
 
-export const InputDemo = () => {
+const InputDemo = () => {
 
     const [floatValue, setFloatValue] = useState('');
     const [autoValue, setAutoValue] = useState(null);
@@ -326,3 +326,5 @@ export const InputDemo = () => {
         </div>
     )
 }
+
+export default InputDemo;

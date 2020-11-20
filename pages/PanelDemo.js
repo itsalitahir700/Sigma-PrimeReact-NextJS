@@ -8,7 +8,7 @@ import { Panel } from 'primereact/panel';
 import { Fieldset } from 'primereact/fieldset';
 import { Card } from 'primereact/card';
 
-export const PanelDemo = () => {
+const PanelDemo = () => {
 
     const toolbarItems = [
         {
@@ -137,3 +137,5 @@ export const PanelDemo = () => {
         </div>
     )
 }
+
+export default PanelDemo;

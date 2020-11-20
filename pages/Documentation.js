@@ -1,7 +1,7 @@
 import React from 'react';
 import { CodeHighlight } from './CodeHighlight';
 
-export const Documentation = () => {
+const Documentation = () => {
 
     return (
         <div className="p-grid">
@@ -322,3 +322,5 @@ $footerBgColor:#ffffff;
         </div>
     )
 }
+
+export default Documentation;

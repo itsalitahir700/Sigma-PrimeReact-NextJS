@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button } from 'primereact/button';
-import { CodeHighlight } from '../components/CodeHighlight';
+import CodeHighlight from './CodeHighlight';
 
-export const IconsDemo = () => {
+const IconsDemo = () => {
 
     const [icons, setIcons] = useState([]);
 
@@ -97,3 +97,5 @@ export const IconsDemo = () => {
         </div>
     )
 }
+
+export default IconsDemo;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const TypographyDemo = () => {
+const TypographyDemo = () => {
 
     return (
         <div className="p-grid">
@@ -41,3 +41,5 @@ export const TypographyDemo = () => {
         </div>
     )
 }
+
+export default TypographyDemo;

@@ -8,12 +8,12 @@ import { Chart } from 'primereact/chart';
 import { ProgressBar } from 'primereact/progressbar';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { FullCalendar } from 'primereact/fullcalendar';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import { ProductService } from '../service/ProductService';
-import { EventService } from '../service/EventService';
+// import { FullCalendar } from 'primereact/fullcalendar';
+// import dayGridPlugin from '@fullcalendar/daygrid';
+// import timeGridPlugin from '@fullcalendar/timegrid';
+// import interactionPlugin from '@fullcalendar/interaction';
+import { ProductService } from '../src/service/ProductService';
+import { EventService } from '../src/service/EventService';
 
 const dropdownCities = [
     { name: 'New York', code: 'NY' },
@@ -24,7 +24,7 @@ const dropdownCities = [
 ];
 
 const options = {
-    plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+    // plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
     defaultDate: '2019-01-01',
     header: {
         left: 'prev,next',
@@ -54,7 +54,7 @@ const lineData = {
     ]
 };
 
-export const Dashboard = () => {
+const Dashboard = () => {
 
     const [tasksCheckbox, setTasksCheckbox] = useState([]);
     const [dropdownCity, setDropdownCity] = useState(null);
@@ -266,7 +266,7 @@ export const Dashboard = () => {
 
             <div className="p-col-12 p-lg-8">
                 <Panel header="Calendar" style={{ height: '100%' }}>
-                    <FullCalendar events={events} options={options} />
+                    {/* <FullCalendar events={events} options={options} /> */}
                 </Panel>
             </div>
 
@@ -333,3 +333,5 @@ export const Dashboard = () => {
         </div>
     );
 }
+
+export default Dashboard;

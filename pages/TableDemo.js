@@ -4,12 +4,12 @@ import { Column } from 'primereact/column';
 import { Rating } from 'primereact/rating';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
-import { ProductService } from '../service/ProductService';
-import { CustomerService } from '../service/CustomerService';
+import { ProductService } from '../src/service/ProductService';
+import { CustomerService } from '../src/service/CustomerService';
 import { InputText } from 'primereact/inputtext';
 import { ProgressBar } from 'primereact/progressbar';
 
-export const TableDemo = () => {
+const TableDemo = () => {
 
     const [customer1, setCustomer1] = useState(null);
     const [customer2, setCustomer2] = useState(null);
@@ -275,3 +275,5 @@ export const TableDemo = () => {
         </div>
     )
 }
+
+export default TableDemo;

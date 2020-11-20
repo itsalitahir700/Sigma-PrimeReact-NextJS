@@ -1,17 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
-import { CodeHighlight } from '../components/CodeHighlight';
+import CodeHighlight from './CodeHighlight';
 
-export const SpacingDemo = () => {
+const SpacingDemo = () => {
 
     return (
         <div className="p-grid spacing-demo">
             <div className="p-col-12">
                 <div className="card">
                     <h3>Spacing</h3>
-                    <p><Link to="grid">PrimeFlex</Link> provides various spacing utilities to modify
+                    <p><Link href="/GridDemo"><a>PrimeFlex</a></Link> provides various spacing utilities to modify
                     an element's layout.</p>
 
                     <h5>Classes</h5>
@@ -112,3 +112,5 @@ export const SpacingDemo = () => {
         </div>
     )
 }
+
+export default SpacingDemo;

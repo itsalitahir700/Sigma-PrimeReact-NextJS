@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Tree } from 'primereact/tree';
 import { TreeTable } from 'primereact/treetable';
 import { Column } from 'primereact/column';
-import { NodeService } from '../service/NodeService';
+import { NodeService } from '../src/service/NodeService';
 
-export const TreeDemo = () => {
+const TreeDemo = () => {
 
     const [treeNodes, setTreeNodes] = useState([]);
     const [selectedTreeNodeKeys, setSelectedTreeNodeKeys] = useState(null);
@@ -38,3 +38,5 @@ export const TreeDemo = () => {
         </div>
     )
 }
+
+export default TreeDemo;

@@ -7,7 +7,7 @@ import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-css';
 import 'prismjs/components/prism-scss';
 
-export const CodeHighlight = (props) => {
+const CodeHighlight = (props) => {
 
     const codeElement = useRef(null);
 
@@ -30,3 +30,5 @@ CodeHighlight.defaultProps = {
     lang: 'jsx',
     style: null
 };
+
+export default CodeHighlight;

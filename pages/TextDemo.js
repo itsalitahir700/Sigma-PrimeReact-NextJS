@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const TextDemo = () => {
+const TextDemo = () => {
 
     return (
         <div className="p-grid text-demo">
@@ -34,3 +34,5 @@ export const TextDemo = () => {
         </div>
     )
 }
+
+export default TextDemo;

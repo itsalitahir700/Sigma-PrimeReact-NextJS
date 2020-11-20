@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { FileUpload } from 'primereact/fileupload';
 
-export const FileDemo = () => {
+const FileDemo = () => {
 
     const toast = useRef(null);
 
@@ -23,3 +23,5 @@ export const FileDemo = () => {
         </div>
     )
 }
+
+export default FileDemo;

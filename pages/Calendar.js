@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'primereact/button';
-import { FullCalendar } from 'primereact/fullcalendar';
+// import { FullCalendar } from 'primereact/fullcalendar';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Checkbox } from 'primereact/checkbox';
 import { Calendar as PRCalendar } from 'primereact/calendar';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import { EventService } from '../service/EventService';
+// import dayGridPlugin from '@fullcalendar/daygrid';
+// import timeGridPlugin from '@fullcalendar/timegrid';
+// import interactionPlugin from '@fullcalendar/interaction';
+import { EventService } from '../src/service/EventService';
 
-export const Calendar = () => {
+const Calendar = () => {
 
     const [eventDialog, setEventDialog] = useState(false);
     const [clickedEvent, setClickedEvent] = useState(null);
@@ -18,7 +18,7 @@ export const Calendar = () => {
     const [events, setEvents] = useState(null);
 
     const options = {
-        plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+        // plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
         defaultDate: '2019-01-01',
         header: {
             left: 'prev,next',
@@ -66,7 +66,7 @@ export const Calendar = () => {
         <div className="p-grid">
             <div className="p-col-12">
                 <div className="card">
-                    <FullCalendar events={events} options={options} />
+                    {/* <FullCalendar events={events} options={options} /> */}
 
                     <Dialog visible={eventDialog && !!clickedEvent} style={{ width: '450px' }} header="Event Details" footer={footer} modal closable onHide={() => setEventDialog(false)}>
                         <div className="p-fluid">
@@ -76,11 +76,11 @@ export const Calendar = () => {
                             </div>
                             <div className="p-field">
                                 <label htmlFor="start">From</label>
-                                <PRCalendar id="start" value={changedEvent.start} onChange={(e) => setChangedEvent({ ...changedEvent, ...{ start: e.value } })} showTime appendTo={document.body} />
+                                {/* <PRCalendar id="start" value={changedEvent.start} onChange={(e) => setChangedEvent({ ...changedEvent, ...{ start: e.value } })} showTime appendTo={document.body} /> */}
                             </div>
                             <div className="p-field">
                                 <label htmlFor="end">To</label>
-                                <PRCalendar id="end" value={changedEvent.end} onChange={(e) => setChangedEvent({ ...changedEvent, ...{ end: e.value } })} showTime appendTo={document.body} />
+                                {/* <PRCalendar id="end" value={changedEvent.end} onChange={(e) => setChangedEvent({ ...changedEvent, ...{ end: e.value } })} showTime appendTo={document.body} /> */}
                             </div>
                             <div className="p-field-checkbox">
                                 <Checkbox inputId="allday" name="allday" value="All Day" checked={!!changedEvent.allDay} onChange={(e) => setChangedEvent({ ...changedEvent, ...{ allDay: e.value } })} />
@@ -93,3 +93,5 @@ export const Calendar = () => {
         </div>
     )
 }
+
+export default Calendar;

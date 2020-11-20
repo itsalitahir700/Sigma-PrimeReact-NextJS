@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const ElevationDemo = () => {
+const ElevationDemo = () => {
     let cols = [];
 
     for (let i = 1; i < 25; i++) {
@@ -30,3 +30,5 @@ export const ElevationDemo = () => {
         </div>
     )
 }
+
+export default ElevationDemo;

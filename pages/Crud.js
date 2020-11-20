@@ -12,9 +12,9 @@ import { RadioButton } from 'primereact/radiobutton';
 import { InputNumber } from 'primereact/inputnumber';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
-import { ProductService } from '../service/ProductService';
+import { ProductService } from '../src/service/ProductService';
 
-export const Crud = () => {
+const Crud = () => {
 
     let emptyProduct = {
         id: null,
@@ -375,3 +375,5 @@ export const Crud = () => {
         </div>
     );
 }
+
+export default Crud;

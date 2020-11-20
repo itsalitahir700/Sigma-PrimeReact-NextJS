@@ -2,7 +2,7 @@ import React from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 
-export const DisplayDemo = () => {
+const DisplayDemo = () => {
 
     return (
         <div className="p-grid">
@@ -37,3 +37,5 @@ export const DisplayDemo = () => {
         </div>
     )
 }
+
+export default DisplayDemo;

@@ -7,9 +7,9 @@ import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import { InputText } from 'primereact/inputtext';
-import { ProductService } from '../service/ProductService';
+import { ProductService } from '../src/service/ProductService';
 
-export const OverlayDemo = () => {
+const OverlayDemo = () => {
 
     const [displayBasic, setDisplayBasic] = useState(false);
     const [displayConfirmation, setDisplayConfirmation] = useState(false);
@@ -82,20 +82,20 @@ export const OverlayDemo = () => {
                         <div className="p-grid p-formgrid">
                             <div className="p-col-6">
                                 <Button type="button" label="Image" onClick={toggle} className="p-button-success" />
-                                <OverlayPanel ref={op} appendTo={document.body} showCloseIcon>
+                                {/* <OverlayPanel ref={op} appendTo={document.body} showCloseIcon>
                                     <img src="assets/demo/images/product/blue-band.jpg" alt="Blue Band" />
-                                </OverlayPanel>
+                                </OverlayPanel> */}
                             </div>
                             <div className="p-col-6">
                                 <Button type="button" label="DataTable" onClick={toggleDataTable} className="p-button-success" />
-                                <OverlayPanel ref={op2} appendTo={document.body} showCloseIcon id="overlay_panel" style={{ width: '450px' }}>
+                                {/* <OverlayPanel ref={op2} appendTo={document.body} showCloseIcon id="overlay_panel" style={{ width: '450px' }}>
                                     <DataTable value={products} selection={selectedProduct} onSelectionChange={(e) => setSelectedProduct(e.value)} selectionMode="single"
                                         paginator rows={5} onRowSelect={onProductSelect}>
                                         <Column field="name" header="Name" sortable></Column>
                                         <Column header="Image" body={imageBodyTemplate}></Column>
                                         <Column field="price" header="Price" body={priceBodyTemplate} sortable></Column>
                                     </DataTable>
-                                </OverlayPanel>
+                                </OverlayPanel> */}
                             </div>
                         </div>
                     </div>
@@ -168,3 +168,5 @@ export const OverlayDemo = () => {
         </>
     )
 }
+
+export default OverlayDemo;
