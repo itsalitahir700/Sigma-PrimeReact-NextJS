@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
-// import { Route } from 'react-router-dom';
 import { CSSTransition } from "react-transition-group";
 
 import { AppTopbar } from "../src/AppTopbar";
@@ -9,37 +8,6 @@ import { AppMenu } from "../src/AppMenu";
 import { AppProfile } from "../src/AppProfile";
 import { AppConfig } from "../src/AppConfig";
 import { useRouter } from "next/router";
-
-// import { Dashboard } from './components/Dashboard';
-// import { ButtonDemo } from './components/ButtonDemo';
-// import { ChartDemo } from './components/ChartDemo';
-// import { Documentation } from './components/Documentation';
-// import { FileDemo } from './components/FileDemo';
-// import { FloatLabelDemo } from './components/FloatLabelDemo';
-// import { FormLayoutDemo } from './components/FormLayoutDemo';
-// import { InputDemo } from './components/InputDemo';
-// import { ListDemo } from './components/ListDemo';
-// import { MenuDemo } from './components/MenuDemo';
-// import { MessagesDemo } from './components/MessagesDemo';
-// import { MiscDemo } from './components/MiscDemo';
-// import { OverlayDemo } from './components/OverlayDemo';
-// import { PanelDemo } from './components/PanelDemo';
-// import { TableDemo } from './components/TableDemo';
-// import { TreeDemo } from './components/TreeDemo';
-
-// import { Calendar } from './pages/Calendar';
-// import { Crud } from './pages/Crud';
-// import { EmptyPage } from './pages/EmptyPage';
-
-// import { DisplayDemo } from './utilities/DisplayDemo';
-// import { ElevationDemo } from './utilities/ElevationDemo';
-// import { FlexBoxDemo } from './utilities/FlexBoxDemo';
-// import { GridDemo } from './utilities/GridDemo';
-// import { IconsDemo } from './utilities/IconsDemo';
-// import { SpacingDemo } from './utilities/SpacingDemo';
-// import { TextDemo } from './utilities/TextDemo';
-// import { TypographyDemo } from './utilities/TypographyDemo';
-
 import PrimeReact from "primereact/utils";
 
 import "primereact/resources/themes/saga-blue/theme.css";
