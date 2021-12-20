@@ -1,76 +1,76 @@
 .dashboard {
     @media screen and (max-width: 960px) {
-		.p-datatable {
-			&.p-datatable-customers {
-				.p-datatable-thead > tr > th,
-				.p-datatable-tfoot > tr > td {
-					display: none !important;
-				}
+        .p-datatable {
+            &.p-datatable-customers {
+                .p-datatable-thead > tr > th,
+                .p-datatable-tfoot > tr > td {
+                    display: none !important;
+                }
 
-				.p-datatable-tbody > tr {
-					border-bottom: 1px solid #dee2e6;
-					> td {
-						text-align: left;
-						display: flex;
-						align-items: center;
-						justify-content: center;
-						border: 0 none !important;
-						width: 100% !important;
-						float: left;
-						clear: left;
-						border: 0 none;
+                .p-datatable-tbody > tr {
+                    border-bottom: 1px solid #dee2e6;
+                    > td {
+                        text-align: left;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border: 0 none !important;
+                        width: 100% !important;
+                        float: left;
+                        clear: left;
+                        border: 0 none;
 
-						.p-column-title {
-							padding: .4rem;
-							min-width: 30%;
-							display: inline-block;
-							margin: -.4rem 1rem -.4rem -.4rem;
-							font-weight: bold;
-						}
+                        .p-column-title {
+                            padding: 0.4rem;
+                            min-width: 30%;
+                            display: inline-block;
+                            margin: -0.4rem 1rem -0.4rem -0.4rem;
+                            font-weight: bold;
+                        }
 
-						.p-progressbar {
-							margin-top: .5rem;
-						}
-					}
-				}
-			}
-		}
-	}
+                        .p-progressbar {
+                            margin-top: 0.5rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 .floatlabel-demo {
-	.p-field {
+    .p-field {
         margin-top: 2rem;
         margin-bottom: 0;
-	}
+    }
 }
 
 .input-demo {
     .p-multiselect {
-		min-width: 15rem;
-	}
+        min-width: 15rem;
+    }
 
-	.multiselect-custom {
-		.country-item {
-			display: flex;
-			align-items: center;
+    .multiselect-custom {
+        .country-item {
+            display: flex;
+            align-items: center;
 
-			span.flag {
-				width: 18px;
-				height: 12px;
-				margin-right: .5rem;
-				margin-left: .5rem;
-			}
-		}
+            span.flag {
+                width: 18px;
+                height: 12px;
+                margin-right: 0.5rem;
+                margin-left: 0.5rem;
+            }
+        }
 
-		.country-item-value {
-			border-radius: 3px;
-			display: inline-flex;
-			margin-right: .5rem;
-			background-color: #2196F3;
+        .country-item-value {
+            border-radius: 3px;
+            display: inline-flex;
+            margin-right: 0.5rem;
+            background-color: #2196f3;
             color: #ffffff;
-		}
-	}
+        }
+    }
 }
 
 .list-demo {
@@ -85,7 +85,7 @@
 
     .product-category-icon {
         vertical-align: middle;
-        margin-right: .5rem;
+        margin-right: 0.5rem;
     }
 
     .product-category {
@@ -110,13 +110,13 @@
         }
 
         .p-rating {
-            margin: 0 0 .5rem 0;
+            margin: 0 0 0.5rem 0;
         }
 
         .product-price {
             font-size: 1.5rem;
             font-weight: 600;
-            margin-bottom: .5rem;
+            margin-bottom: 0.5rem;
             align-self: flex-end;
         }
 
@@ -126,37 +126,36 @@
         }
 
         .p-button {
-            margin-bottom: .5rem;
+            margin-bottom: 0.5rem;
         }
-
     }
 
     .product-badge {
         border-radius: 2px;
-        padding: .25em .5rem;
+        padding: 0.25em 0.5rem;
         text-transform: uppercase;
         font-weight: 700;
         font-size: 12px;
-        letter-spacing: .3px;
+        letter-spacing: 0.3px;
 
         &.status-instock {
-            background: #C8E6C9;
+            background: #c8e6c9;
             color: #256029;
         }
 
         &.status-outofstock {
-            background: #FFCDD2;
-            color: #C63737;
+            background: #ffcdd2;
+            color: #c63737;
         }
 
         &.status-lowstock {
-            background: #FEEDAF;
-            color: #8A5340;
+            background: #feedaf;
+            color: #8a5340;
         }
     }
 
     .product-grid-item {
-        margin: .5em;
+        margin: 0.5em;
         border: 1px solid #dee2e6;
 
         .product-grid-item-top,
@@ -218,26 +217,26 @@
 
 .menu-demo {
     .stepsdemo-content {
-		padding: 1em 0;
+        padding: 1em 0;
 
-		p {
-			font-weight: 400;
-			display: inline-block;
-			vertical-align: middle;
-			font-size: 18px;
-			margin: 0;
-		}
+        p {
+            font-weight: 400;
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 18px;
+            margin: 0;
+        }
 
-		i {
-			vertical-align: middle;
-			font-size: 1.5em;
-			margin: 0;
-		}
-	}
+        i {
+            vertical-align: middle;
+            font-size: 1.5em;
+            margin: 0;
+        }
+    }
 
-	.contextmenu-image {
-		width: 100%;
-	}
+    .contextmenu-image {
+        width: 100%;
+    }
 }
 
 .messages-demo {
@@ -246,14 +245,15 @@
     }
 
     .p-inputtext {
-        margin-right: .5rem;
+        margin-right: 0.5rem;
     }
 }
 
 .misc-demo {
     .badges {
-        .p-badge, .p-tag {
-            margin-right: .5rem;
+        .p-badge,
+        .p-tag {
+            margin-right: 0.5rem;
         }
         .p-tag {
             line-height: 1;
@@ -261,8 +261,7 @@
     }
 
     .p-button {
-        margin-right: .5rem;
-
+        margin-right: 0.5rem;
     }
 
     .p-overlay-badge {
@@ -285,9 +284,9 @@
 
 .panel-demo {
     p {
-		line-height: 1.5;
-		margin: 0;
-	}
+        line-height: 1.5;
+        margin: 0;
+    }
 
     .p-card {
         .p-card-title {
@@ -301,16 +300,16 @@
         .p-card-body {
             padding-top: 0;
         }
-	}
+    }
 }
 
 .table-demo {
     .p-progressbar {
-        height: .5rem;
-        background-color: #D8DADC;
+        height: 0.5rem;
+        background-color: #d8dadc;
 
         .p-progressbar-value {
-            background-color: #607D8B;
+            background-color: #607d8b;
         }
     }
 
@@ -354,40 +353,40 @@
 
     .customer-badge {
         border-radius: 2px;
-        padding: .25em .5rem;
+        padding: 0.25em 0.5rem;
         text-transform: uppercase;
         font-weight: 700;
         font-size: 12px;
-        letter-spacing: .3px;
+        letter-spacing: 0.3px;
 
         &.status-qualified {
-            background: #C8E6C9;
+            background: #c8e6c9;
             color: #256029;
         }
 
         &.status-unqualified {
-            background: #FFCDD2;
-            color: #C63737;
+            background: #ffcdd2;
+            color: #c63737;
         }
 
         &.status-negotiation {
-            background: #FEEDAF;
-            color: #8A5340;
+            background: #feedaf;
+            color: #8a5340;
         }
 
         &.status-new {
-            background: #B3E5FC;
-            color: #23547B;
+            background: #b3e5fc;
+            color: #23547b;
         }
 
         &.status-renewal {
-            background: #ECCFFF;
+            background: #eccfff;
             color: #694382;
         }
 
         &.status-proposal {
-            background: #FFD8B2;
-            color: #805B36;
+            background: #ffd8b2;
+            color: #805b36;
         }
     }
 
@@ -397,13 +396,13 @@
 
     @media (max-width: 640px) {
         .p-progressbar {
-            margin-top: .5rem;
+            margin-top: 0.5rem;
         }
     }
 
     .product-image {
         width: 100px;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     }
 
     .orders-subtable {
@@ -412,53 +411,53 @@
 
     .product-badge {
         border-radius: 2px;
-        padding: .25em .5rem;
+        padding: 0.25em 0.5rem;
         text-transform: uppercase;
         font-weight: 700;
         font-size: 12px;
-        letter-spacing: .3px;
+        letter-spacing: 0.3px;
 
         &.status-instock {
-            background: #C8E6C9;
+            background: #c8e6c9;
             color: #256029;
         }
 
         &.status-outofstock {
-            background: #FFCDD2;
-            color: #C63737;
+            background: #ffcdd2;
+            color: #c63737;
         }
 
         &.status-lowstock {
-            background: #FEEDAF;
-            color: #8A5340;
+            background: #feedaf;
+            color: #8a5340;
         }
     }
 
     .order-badge {
         border-radius: 2px;
-        padding: .25em .5rem;
+        padding: 0.25em 0.5rem;
         text-transform: uppercase;
         font-weight: 700;
         font-size: 12px;
-        letter-spacing: .3px;
+        letter-spacing: 0.3px;
 
         &.order-delivered {
-            background: #C8E6C9;
+            background: #c8e6c9;
             color: #256029;
         }
 
         &.order-cancelled {
-            background: #FFCDD2;
-            color: #C63737;
+            background: #ffcdd2;
+            color: #c63737;
         }
 
         &.order-pending {
-            background: #FEEDAF;
-            color: #8A5340;
+            background: #feedaf;
+            color: #8a5340;
         }
 
         &.order-returned {
-            background: #ECCFFF;
+            background: #eccfff;
             color: #694382;
         }
     }
@@ -482,15 +481,15 @@
                         border: 0 none;
 
                         .p-column-title {
-                            padding: .4rem;
+                            padding: 0.4rem;
                             min-width: 30%;
                             display: inline-block;
-                            margin: -.4rem 1rem -.4rem -.4rem;
+                            margin: -0.4rem 1rem -0.4rem -0.4rem;
                             font-weight: bold;
                         }
 
                         .p-progressbar {
-                            margin-top: .5rem;
+                            margin-top: 0.5rem;
                         }
                     }
                 }
@@ -501,8 +500,8 @@
 
 .text-demo {
     .demo-container {
-		border: 2px solid #dee2e6;
-	}
+        border: 2px solid #dee2e6;
+    }
 }
 
 .spacing-demo {
@@ -523,7 +522,7 @@
 
     .icons-list i {
         font-size: 1.5rem;
-        margin-bottom: .5rem;
+        margin-bottom: 0.5rem;
     }
 }
 
@@ -534,7 +533,7 @@
         padding-top: 1rem;
         padding-bottom: 1rem;
         border-radius: 4px;
-        box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+        box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
     }
 
     .box-stretched {
@@ -552,15 +551,18 @@
         padding-bottom: 1rem;
     }
 
-    .dynamic-box-enter-active, .dynamic-box-leave-active {
-        transition: all .5s;
+    .dynamic-box-enter-active,
+    .dynamic-box-leave-active {
+        transition: all 0.5s;
     }
 
-    .dynamic-box-enter-from, .dynamic-box-leave-to {
+    .dynamic-box-enter-from,
+    .dynamic-box-leave-to {
         opacity: 0;
     }
 
-    .dynamic-box-enter-from, .dynamic-box-leave-to {
+    .dynamic-box-enter-from,
+    .dynamic-box-leave-to {
         transform: translateX(30px);
     }
 
@@ -571,17 +573,17 @@
 
 .flexbox-demo {
     .p-d-flex > div,
-	.box {
-		background-color: #ffffff;
-		text-align: center;
-		padding: 1rem;
-		border-radius: 4px;
-		box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
-	}
+    .box {
+        background-color: #ffffff;
+        text-align: center;
+        padding: 1rem;
+        border-radius: 4px;
+        box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+    }
 
-	.p-d-flex > div {
-		width: 8rem;
-	}
+    .p-d-flex > div {
+        width: 8rem;
+    }
 }
 
 .elevation-demo {
@@ -629,25 +631,25 @@
 
     .product-badge {
         border-radius: 2px;
-        padding: .25em .5rem;
+        padding: 0.25em 0.5rem;
         text-transform: uppercase;
         font-weight: 700;
         font-size: 12px;
-        letter-spacing: .3px;
+        letter-spacing: 0.3px;
 
         &.status-instock {
-            background: #C8E6C9;
+            background: #c8e6c9;
             color: #256029;
         }
 
         &.status-outofstock {
-            background: #FFCDD2;
-            color: #C63737;
+            background: #ffcdd2;
+            color: #c63737;
         }
 
         &.status-lowstock {
-            background: #FEEDAF;
-            color: #8A5340;
+            background: #feedaf;
+            color: #8a5340;
         }
     }
 
@@ -676,15 +678,15 @@
                         border: 0 none;
 
                         .p-column-title {
-                            padding: .4rem;
+                            padding: 0.4rem;
                             min-width: 30%;
                             display: inline-block;
-                            margin: -.4rem 1rem -.4rem -.4rem;
+                            margin: -0.4rem 1rem -0.4rem -0.4rem;
                             font-weight: bold;
                         }
 
                         .p-progressbar {
-                            margin-top: .5rem;
+                            margin-top: 0.5rem;
                         }
 
                         .actions {
@@ -711,7 +713,8 @@
 }
 
 pre[class*="language-"] {
-    &:after, &:before {
+    &:after,
+    &:before {
         box-shadow: none;
     }
 
@@ -721,6 +724,6 @@ pre[class*="language-"] {
 
     > code {
         box-shadow: none !important;
-        border-left: 10px solid #0388E5;
+        border-left: 10px solid #0388e5;
     }
 }
