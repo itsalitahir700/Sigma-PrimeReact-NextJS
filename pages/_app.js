@@ -8,7 +8,11 @@ import { AppMenu } from "../src/AppMenu";
 import { AppProfile } from "../src/AppProfile";
 import { AppConfig } from "../src/AppConfig";
 import { useRouter } from "next/router";
+import { Provider } from "react-redux";
 import PrimeReact from "primereact/utils";
+import { ToastContainer } from "react-toastify";
+
+import store from "../redux/store";
 
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
@@ -18,9 +22,11 @@ import "prismjs/themes/prism-coy.css";
 import "@fullcalendar/core/main.css";
 import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
+import "react-toastify/dist/ReactToastify.css";
 import "../src/layout/flags/flags.css";
 import "../src/layout/layout.scss";
 import "../src/App.scss";
+import "../styles/login.scss";
 
 const App = ({ Component, pageProps }) => {
     const [layoutMode, setLayoutMode] = useState("static");
@@ -242,33 +248,36 @@ const App = ({ Component, pageProps }) => {
         "layout-sidebar-dark": layoutColorMode === "dark",
         "layout-sidebar-light": layoutColorMode === "light",
     });
+    const component = <Component {...pageProps} />;
 
     const { pathname } = useRouter();
-    if (pathname !== "/login")
-        return (
-            <div className={wrapperClass} onClick={onWrapperClick}>
-                <AppTopbar onToggleMenu={onToggleMenu} />
+    return (
+        <Provider store={store}>
+            <ToastContainer />
+            {pathname !== "/login" ? (
+                <div className={wrapperClass} onClick={onWrapperClick}>
+                    <AppTopbar onToggleMenu={onToggleMenu} />
 
-                <CSSTransition classNames="layout-sidebar" timeout={{ enter: 200, exit: 200 }} in={isSidebarVisible()} unmountOnExit>
-                    <div ref={sidebar} className={sidebarClassName} onClick={onSidebarClick}>
-                        <div className="layout-logo">
-                            <img alt="Logo" src={logo} />
+                    <CSSTransition classNames="layout-sidebar" timeout={{ enter: 200, exit: 200 }} in={isSidebarVisible()} unmountOnExit>
+                        <div ref={sidebar} className={sidebarClassName} onClick={onSidebarClick}>
+                            <div className="layout-logo">
+                                <img alt="Logo" src={logo} />
+                            </div>
+                            <AppProfile />
+                            <AppMenu model={menu} onMenuItemClick={onMenuItemClick} />
                         </div>
-                        <AppProfile />
-                        <AppMenu model={menu} onMenuItemClick={onMenuItemClick} />
-                    </div>
-                </CSSTransition>
+                    </CSSTransition>
 
-                <AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange} layoutMode={layoutMode} onLayoutModeChange={onLayoutModeChange} layoutColorMode={layoutColorMode} onColorModeChange={onColorModeChange} />
+                    <AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange} layoutMode={layoutMode} onLayoutModeChange={onLayoutModeChange} layoutColorMode={layoutColorMode} onColorModeChange={onColorModeChange} />
 
-                <div className="layout-main">
-                    <Component {...pageProps} />
+                    <div className="layout-main">{component}</div>
+
+                    <AppFooter />
                 </div>
-
-                <AppFooter />
-            </div>
-        );
-
-    return <Component {...pageProps} />;
+            ) : (
+                component
+            )}
+        </Provider>
+    );
 };
 export default App;
