@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import classNames from "classnames";
 import { CSSTransition } from "react-transition-group";
 import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
 
 export const AppProfile = () => {
     const [expanded, setExpanded] = useState(false);
+
+    const { authenticationSlice } = useSelector((state) => state);
 
     const onClick = (event) => {
         setExpanded((prevState) => !prevState);
@@ -13,7 +16,7 @@ export const AppProfile = () => {
 
     const onLogout = () => {
         Cookies.remove("auth");
-        window.location.href = "/login";
+        window.location.href = "/Login";
     };
 
     return (
@@ -22,7 +25,7 @@ export const AppProfile = () => {
                 <img src="assets/layout/images/profile.png" alt="Profile" />
             </div>
             <button className="p-link layout-profile-link" onClick={onClick}>
-                <span className="username">Claire Williams</span>
+                <span className="username">{authenticationSlice?.fullName}</span>
                 <i className="pi pi-fw pi-cog" />
             </button>
             <CSSTransition classNames="p-toggleable-content" timeout={{ enter: 1000, exit: 450 }} in={expanded} unmountOnExit>

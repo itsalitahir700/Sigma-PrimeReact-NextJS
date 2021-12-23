@@ -3,7 +3,6 @@ import classNames from "classnames";
 import { CSSTransition } from "react-transition-group";
 
 import { AppTopbar } from "../src/AppTopbar";
-import { AppFooter } from "../src/AppFooter";
 import { AppMenu } from "../src/AppMenu";
 import { AppProfile } from "../src/AppProfile";
 import { AppConfig } from "../src/AppConfig";
@@ -26,7 +25,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "../src/layout/flags/flags.css";
 import "../src/layout/layout.scss";
 import "../src/App.scss";
-import "../styles/login.scss";
+import "../styles/Login.scss";
+import "../styles/Table.scss";
 
 const App = ({ Component, pageProps }) => {
     const [layoutMode, setLayoutMode] = useState("static");
@@ -254,7 +254,7 @@ const App = ({ Component, pageProps }) => {
     return (
         <Provider store={store}>
             <ToastContainer />
-            {pathname !== "/login" ? (
+            {pathname !== "/Login" ? (
                 <div className={wrapperClass} onClick={onWrapperClick}>
                     <AppTopbar onToggleMenu={onToggleMenu} />
 
@@ -271,8 +271,6 @@ const App = ({ Component, pageProps }) => {
                     <AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange} layoutMode={layoutMode} onLayoutModeChange={onLayoutModeChange} layoutColorMode={layoutColorMode} onColorModeChange={onColorModeChange} />
 
                     <div className="layout-main">{component}</div>
-
-                    <AppFooter />
                 </div>
             ) : (
                 component

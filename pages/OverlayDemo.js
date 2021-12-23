@@ -1,16 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Dialog } from 'primereact/dialog';
-import { Button } from 'primereact/button';
-import { Sidebar } from 'primereact/sidebar';
-import { Toast } from 'primereact/toast';
-import { Column } from 'primereact/column';
-import { DataTable } from 'primereact/datatable';
-import { OverlayPanel } from 'primereact/overlaypanel';
-import { InputText } from 'primereact/inputtext';
-import { ProductService } from '../src/service/ProductService';
+import React, { useState, useEffect, useRef } from "react";
+import { Dialog } from "primereact/dialog";
+import { Button } from "primereact/button";
+import { Sidebar } from "primereact/sidebar";
+import { Toast } from "primereact/toast";
+import { InputText } from "primereact/inputtext";
+import { ProductService } from "../src/service/ProductService";
 
 const OverlayDemo = () => {
-
     const [displayBasic, setDisplayBasic] = useState(false);
     const [displayConfirmation, setDisplayConfirmation] = useState(false);
     const [visibleLeft, setVisibleLeft] = useState(false);
@@ -18,15 +14,14 @@ const OverlayDemo = () => {
     const [visibleTop, setVisibleTop] = useState(false);
     const [visibleBottom, setVisibleBottom] = useState(false);
     const [visibleFullScreen, setVisibleFullScreen] = useState(false);
-    const [products, setProducts] = useState(null);
-    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [, setProducts] = useState(null);
     const op = useRef(null);
     const op2 = useRef(null);
     const toast = useRef(null);
 
     useEffect(() => {
         const productService = new ProductService();
-        productService.getProductsSmall().then(data => setProducts(data));
+        productService.getProductsSmall().then((data) => setProducts(data));
     }, []);
 
     const toggle = (event) => {
@@ -37,18 +32,7 @@ const OverlayDemo = () => {
         op2.current.toggle(event);
     };
 
-    const formatCurrency = (value) => {
-        return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-    };
-
-    const onProductSelect = (event) => {
-        op2.current.hide();
-        toast.current.show({ severity: 'info', summary: 'Product Selected', detail: event.data.name, life: 3000 });
-    };
-
     const basicDialogFooter = <Button type="button" label="Dismiss" onClick={() => setDisplayBasic(false)} icon="pi pi-check" className="p-button-secondary" />;
-    const imageBodyTemplate = (data) => <img src={`assets/demo/images/product/${data.image}`} alt={data.image} className="product-image" width="50" style={{boxShadow: '0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)'}} />;
-    const priceBodyTemplate = (data) => formatCurrency(data.price);
     const confirmationDialogFooter = (
         <>
             <Button type="button" label="No" icon="pi pi-times" onClick={() => setDisplayConfirmation(false)} className="p-button-text" />
@@ -63,13 +47,11 @@ const OverlayDemo = () => {
                 <div className="p-col-12 p-lg-6">
                     <div className="card p-fluid">
                         <h5>Dialog</h5>
-                        <Dialog header="Dialog" visible={displayBasic} style={{ width: '30vw' }} modal footer={basicDialogFooter} onHide={() => setDisplayBasic(false)}>
+                        <Dialog header="Dialog" visible={displayBasic} style={{ width: "30vw" }} modal footer={basicDialogFooter} onHide={() => setDisplayBasic(false)}>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
-                                in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        </p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </p>
                         </Dialog>
                         <div className="p-grid">
                             <div className="p-col-12">
@@ -105,9 +87,9 @@ const OverlayDemo = () => {
                     <div className="card p-fluid">
                         <h5>Confirmation</h5>
                         <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={() => setDisplayConfirmation(true)} />
-                        <Dialog header="Confirmation" visible={displayConfirmation} onHide={() => setDisplayConfirmation(false)} style={{ width: '350px' }} modal footer={confirmationDialogFooter}>
+                        <Dialog header="Confirmation" visible={displayConfirmation} onHide={() => setDisplayConfirmation(false)} style={{ width: "350px" }} modal footer={confirmationDialogFooter}>
                             <div className="confirmation-content">
-                                <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem' }} />
+                                <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: "2rem" }} />
                                 <span>Are you sure you want to proceed?</span>
                             </div>
                         </Dialog>
@@ -115,39 +97,39 @@ const OverlayDemo = () => {
                     <div className="card">
                         <h5>Sidebar</h5>
                         <Sidebar visible={visibleLeft} onHide={() => setVisibleLeft(false)} baseZIndex={1000}>
-                            <h1 style={{ fontWeight: 'normal' }}>Left Sidebar</h1>
-                            <Button type="button" onClick={() => setVisibleLeft(false)} label="Save" className="p-button-success" style={{marginRight: '.25em'}} />
+                            <h1 style={{ fontWeight: "normal" }}>Left Sidebar</h1>
+                            <Button type="button" onClick={() => setVisibleLeft(false)} label="Save" className="p-button-success" style={{ marginRight: ".25em" }} />
                             <Button type="button" onClick={() => setVisibleLeft(false)} label="Cancel" className="p-button-secondary" />
                         </Sidebar>
 
                         <Sidebar visible={visibleRight} onHide={() => setVisibleRight(false)} baseZIndex={1000} position="right">
-                            <h1 style={{ fontWeight: 'normal' }}>Right Sidebar</h1>
-                            <Button type="button" onClick={() => setVisibleRight(false)} label="Save" className="p-button-success" style={{marginRight: '.25em'}} />
+                            <h1 style={{ fontWeight: "normal" }}>Right Sidebar</h1>
+                            <Button type="button" onClick={() => setVisibleRight(false)} label="Save" className="p-button-success" style={{ marginRight: ".25em" }} />
                             <Button type="button" onClick={() => setVisibleRight(false)} label="Cancel" className="p-button-secondary" />
                         </Sidebar>
 
                         <Sidebar visible={visibleTop} onHide={() => setVisibleTop(false)} baseZIndex={1000} position="top">
-                            <h1 style={{ fontWeight: 'normal' }}>Top Sidebar</h1>
-                            <Button type="button" onClick={() => setVisibleTop(false)} label="Save" className="p-button-success" style={{marginRight: '.25em'}} />
+                            <h1 style={{ fontWeight: "normal" }}>Top Sidebar</h1>
+                            <Button type="button" onClick={() => setVisibleTop(false)} label="Save" className="p-button-success" style={{ marginRight: ".25em" }} />
                             <Button type="button" onClick={() => setVisibleTop(false)} label="Cancel" className="p-button-secondary" />
                         </Sidebar>
 
                         <Sidebar visible={visibleBottom} onHide={() => setVisibleBottom(false)} baseZIndex={1000} position="bottom">
-                            <h1 style={{ fontWeight: 'normal' }}>Bottom Sidebar</h1>
-                            <Button type="button" onClick={() => setVisibleBottom(false)} label="Save" className="p-button-success" style={{marginRight: '.25em'}} />
+                            <h1 style={{ fontWeight: "normal" }}>Bottom Sidebar</h1>
+                            <Button type="button" onClick={() => setVisibleBottom(false)} label="Save" className="p-button-success" style={{ marginRight: ".25em" }} />
                             <Button type="button" onClick={() => setVisibleBottom(false)} label="Cancel" className="p-button-secondary" />
                         </Sidebar>
 
                         <Sidebar visible={visibleFullScreen} onHide={() => setVisibleFullScreen(false)} baseZIndex={1000} fullScreen>
-                            <h1 style={{ fontWeight: 'normal' }}>Full Screen</h1>
-                            <Button type="button" onClick={() => setVisibleFullScreen(false)} label="Save" className="p-button-success" style={{marginRight: '.25em'}} />
+                            <h1 style={{ fontWeight: "normal" }}>Full Screen</h1>
+                            <Button type="button" onClick={() => setVisibleFullScreen(false)} label="Save" className="p-button-success" style={{ marginRight: ".25em" }} />
                             <Button type="button" onClick={() => setVisibleFullScreen(false)} label="Cancel" className="p-button-secondary" />
                         </Sidebar>
 
-                        <Button type="button" icon="pi pi-arrow-right" className="p-button-warning" onClick={() => setVisibleLeft(true)} style={{ marginRight: '.25em' }} />
-                        <Button type="button" icon="pi pi-arrow-left" className="p-button-warning" onClick={() => setVisibleRight(true)} style={{ marginRight: '.25em' }} />
-                        <Button type="button" icon="pi pi-arrow-down" className="p-button-warning" onClick={() => setVisibleTop(true)} style={{ marginRight: '.25em' }} />
-                        <Button type="button" icon="pi pi-arrow-up" className="p-button-warning" onClick={() => setVisibleBottom(true)} style={{ marginRight: '.25em' }} />
+                        <Button type="button" icon="pi pi-arrow-right" className="p-button-warning" onClick={() => setVisibleLeft(true)} style={{ marginRight: ".25em" }} />
+                        <Button type="button" icon="pi pi-arrow-left" className="p-button-warning" onClick={() => setVisibleRight(true)} style={{ marginRight: ".25em" }} />
+                        <Button type="button" icon="pi pi-arrow-down" className="p-button-warning" onClick={() => setVisibleTop(true)} style={{ marginRight: ".25em" }} />
+                        <Button type="button" icon="pi pi-arrow-up" className="p-button-warning" onClick={() => setVisibleBottom(true)} style={{ marginRight: ".25em" }} />
                         <Button type="button" icon="pi pi-external-link" className="p-button-warning" onClick={() => setVisibleFullScreen(true)} />
                     </div>
                 </div>
@@ -166,7 +148,7 @@ const OverlayDemo = () => {
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
 export default OverlayDemo;

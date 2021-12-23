@@ -28,8 +28,8 @@
 }
 
 .login_button {
-    border: 1px solid #037203;
-    background-color: #156519 !important;
+    border: 1px solid linear-gradient(to right, #0388e5 0%, #07bdf4 100%);
+    background: linear-gradient(to right, #0388e5 0%, #07bdf4 100%) !important;
     color: #ffffff;
 }
 
@@ -123,9 +123,9 @@
 }
 
 .overlay {
-    background: #ff416c;
-    background: -webkit-linear-gradient(to right, #046309, #068b1d);
-    background: linear-gradient(to right, #037203, #056d24);
+    background: linear-gradient(to right, #0388e5 0%, #07bdf4 100%);
+    background: -webkit-linear-gradient(to right, #0388e5 0%, #07bdf4 100%);
+    background: linear-gradient(to right, #0388e5 0%, #07bdf4 100%);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 0 0;
