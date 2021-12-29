@@ -3,6 +3,7 @@ import { Button } from "primereact/button";
 import { useDispatch } from "react-redux";
 import { loginAction } from "../redux/actions/authAction";
 import { useRouter } from "next/router";
+import * as cookie from "cookie";
 
 const Login = () => {
     const [username, setusername] = useState("");
@@ -20,10 +21,10 @@ const Login = () => {
         const data = {
             username: username,
             password: password,
-            deviceId: "03008431203",
+            deviceId: "03375909244",
         };
         const res = await dispatch(loginAction(data));
-        if (res) router.push("/");
+        if (res) router.push("/BulkPayment");
         setloading(false);
         setloadingIcon(null);
     };
@@ -59,3 +60,18 @@ const Login = () => {
 };
 
 export default Login;
+
+export async function getServerSideProps(context) {
+    const { req } = context;
+    const { auth } = cookie.parse(req ? req.headers.cookie || "" : document.cookie);
+    if (auth) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/BulkPayment",
+            },
+        };
+    }
+
+    return { props: {} };
+}

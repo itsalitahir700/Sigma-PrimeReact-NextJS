@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { Provider } from "react-redux";
 import PrimeReact from "primereact/utils";
 import { ToastContainer } from "react-toastify";
+import * as cookie from "cookie";
 
 import store from "../redux/store";
 
@@ -27,8 +28,9 @@ import "../src/layout/layout.scss";
 import "../src/App.scss";
 import "../styles/Login.scss";
 import "../styles/Table.scss";
+import { getWallet } from "../redux/actions/authAction";
 
-const App = ({ Component, pageProps }) => {
+const App = ({ Component, pageProps, auth, accountBalance }) => {
     const [layoutMode, setLayoutMode] = useState("static");
     const [layoutColorMode, setLayoutColorMode] = useState("dark");
     const [staticMenuInactive, setStaticMenuInactive] = useState(false);
@@ -99,110 +101,111 @@ const App = ({ Component, pageProps }) => {
     };
 
     const menu = [
-        { label: "Dashboard", icon: "pi pi-fw pi-home", to: "/" },
-        {
-            label: "UI Kit",
-            icon: "pi pi-fw pi-sitemap",
-            items: [
-                { label: "Form Layout", icon: "pi pi-fw pi-id-card", to: "/FormLayoutDemo" },
-                { label: "Input", icon: "pi pi-fw pi-check-square", to: "/InputDemo" },
-                { label: "Float Label", icon: "pi pi-fw pi-bookmark", to: "/FloatLabelDemo" },
-                { label: "Button", icon: "pi pi-fw pi-mobile", to: "/ButtonDemo" },
-                { label: "Table", icon: "pi pi-fw pi-table", to: "/TableDemo" },
-                { label: "List", icon: "pi pi-fw pi-list", to: "/ListDemo" },
-                { label: "Tree", icon: "pi pi-fw pi-share-alt", to: "/TreeDemo" },
-                { label: "Panel", icon: "pi pi-fw pi-tablet", to: "/PanelDemo" },
-                { label: "Overlay", icon: "pi pi-fw pi-clone", to: "/OverlayDemo" },
-                { label: "Menu", icon: "pi pi-fw pi-bars", to: "/MenuDemo" },
-                { label: "Message", icon: "pi pi-fw pi-comment", to: "/MessagesDemo" },
-                { label: "File", icon: "pi pi-fw pi-file", to: "/FileDemo" },
-                { label: "Chart", icon: "pi pi-fw pi-chart-bar", to: "/ChartDemo" },
-                { label: "Misc", icon: "pi pi-fw pi-circle-off", to: "/MiscDemo" },
-            ],
-        },
-        {
-            label: "Utilities",
-            icon: "pi pi-fw pi-globe",
-            items: [
-                { label: "Display", icon: "pi pi-fw pi-desktop", to: "/DisplayDemo" },
-                { label: "Elevation", icon: "pi pi-fw pi-external-link", to: "/ElevationDemo" },
-                { label: "Flexbox", icon: "pi pi-fw pi-directions", to: "/FlexBoxDemo" },
-                { label: "Icons", icon: "pi pi-fw pi-search", to: "/IconsDemo" },
-                { label: "Grid System", icon: "pi pi-fw pi-th-large", to: "/GridDemo" },
-                { label: "Spacing", icon: "pi pi-fw pi-arrow-right", to: "/SpacingDemo" },
-                { label: "Typography", icon: "pi pi-fw pi-align-center", to: "/TypographyDemo" },
-                { label: "Text", icon: "pi pi-fw pi-pencil", to: "/TextDemo" },
-            ],
-        },
-        {
-            label: "Pages",
-            icon: "pi pi-fw pi-clone",
-            items: [
-                { label: "Crud", icon: "pi pi-fw pi-user-edit", to: "/Crud" },
-                { label: "Calendar", icon: "pi pi-fw pi-calendar-plus", to: "/Calendar" },
-                { label: "Empty Page", icon: "pi pi-fw pi-circle-off", to: "/EmptyPage" },
-            ],
-        },
-        {
-            label: "Menu Hierarchy",
-            icon: "pi pi-fw pi-search",
-            items: [
-                {
-                    label: "Submenu 1",
-                    icon: "pi pi-fw pi-bookmark",
-                    items: [
-                        {
-                            label: "Submenu 1.1",
-                            icon: "pi pi-fw pi-bookmark",
-                            items: [
-                                { label: "Submenu 1.1.1", icon: "pi pi-fw pi-bookmark" },
-                                { label: "Submenu 1.1.2", icon: "pi pi-fw pi-bookmark" },
-                                { label: "Submenu 1.1.3", icon: "pi pi-fw pi-bookmark" },
-                            ],
-                        },
-                        {
-                            label: "Submenu 1.2",
-                            icon: "pi pi-fw pi-bookmark",
-                            items: [
-                                { label: "Submenu 1.2.1", icon: "pi pi-fw pi-bookmark" },
-                                { label: "Submenu 1.2.2", icon: "pi pi-fw pi-bookmark" },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    label: "Submenu 2",
-                    icon: "pi pi-fw pi-bookmark",
-                    items: [
-                        {
-                            label: "Submenu 2.1",
-                            icon: "pi pi-fw pi-bookmark",
-                            items: [
-                                { label: "Submenu 2.1.1", icon: "pi pi-fw pi-bookmark" },
-                                { label: "Submenu 2.1.2", icon: "pi pi-fw pi-bookmark" },
-                                { label: "Submenu 2.1.3", icon: "pi pi-fw pi-bookmark" },
-                            ],
-                        },
-                        {
-                            label: "Submenu 2.2",
-                            icon: "pi pi-fw pi-bookmark",
-                            items: [
-                                { label: "Submenu 2.2.1", icon: "pi pi-fw pi-bookmark" },
-                                { label: "Submenu 2.2.2", icon: "pi pi-fw pi-bookmark" },
-                            ],
-                        },
-                    ],
-                },
-            ],
-        },
-        // { label: 'Documentation', icon: 'pi pi-fw pi-question', command: () => { window.location = "#/documentation" } },
-        {
-            label: "View Source",
-            icon: "pi pi-fw pi-search",
-            command: () => {
-                window.location = "https://github.com/schneidersteve/sigma-react-nextjs";
-            },
-        },
+        // { label: "Dashboard", icon: "pi pi-fw pi-home", to: "/" },
+        { label: "Bulk Payment", icon: "pi pi-fw pi-table", to: "/BulkPayment" },
+        // {
+        //     label: "UI Kit",
+        //     icon: "pi pi-fw pi-sitemap",
+        //     items: [
+        //         { label: "Form Layout", icon: "pi pi-fw pi-id-card", to: "/FormLayoutDemo" },
+        //         { label: "Input", icon: "pi pi-fw pi-check-square", to: "/InputDemo" },
+        //         { label: "Float Label", icon: "pi pi-fw pi-bookmark", to: "/FloatLabelDemo" },
+        //         { label: "Button", icon: "pi pi-fw pi-mobile", to: "/ButtonDemo" },
+        //         { label: "Table", icon: "pi pi-fw pi-table", to: "/TableDemo" },
+        //         { label: "List", icon: "pi pi-fw pi-list", to: "/ListDemo" },
+        //         { label: "Tree", icon: "pi pi-fw pi-share-alt", to: "/TreeDemo" },
+        //         { label: "Panel", icon: "pi pi-fw pi-tablet", to: "/PanelDemo" },
+        //         { label: "Overlay", icon: "pi pi-fw pi-clone", to: "/OverlayDemo" },
+        //         { label: "Menu", icon: "pi pi-fw pi-bars", to: "/MenuDemo" },
+        //         { label: "Message", icon: "pi pi-fw pi-comment", to: "/MessagesDemo" },
+        //         { label: "File", icon: "pi pi-fw pi-file", to: "/FileDemo" },
+        //         { label: "Chart", icon: "pi pi-fw pi-chart-bar", to: "/ChartDemo" },
+        //         { label: "Misc", icon: "pi pi-fw pi-circle-off", to: "/MiscDemo" },
+        //     ],
+        // },
+        // {
+        //     label: "Utilities",
+        //     icon: "pi pi-fw pi-globe",
+        //     items: [
+        //         { label: "Display", icon: "pi pi-fw pi-desktop", to: "/DisplayDemo" },
+        //         { label: "Elevation", icon: "pi pi-fw pi-external-link", to: "/ElevationDemo" },
+        //         { label: "Flexbox", icon: "pi pi-fw pi-directions", to: "/FlexBoxDemo" },
+        //         { label: "Icons", icon: "pi pi-fw pi-search", to: "/IconsDemo" },
+        //         { label: "Grid System", icon: "pi pi-fw pi-th-large", to: "/GridDemo" },
+        //         { label: "Spacing", icon: "pi pi-fw pi-arrow-right", to: "/SpacingDemo" },
+        //         { label: "Typography", icon: "pi pi-fw pi-align-center", to: "/TypographyDemo" },
+        //         { label: "Text", icon: "pi pi-fw pi-pencil", to: "/TextDemo" },
+        //     ],
+        // },
+        // {
+        //     label: "Pages",
+        //     icon: "pi pi-fw pi-clone",
+        //     items: [
+        //         { label: "Crud", icon: "pi pi-fw pi-user-edit", to: "/Crud" },
+        //         { label: "Calendar", icon: "pi pi-fw pi-calendar-plus", to: "/Calendar" },
+        //         { label: "Empty Page", icon: "pi pi-fw pi-circle-off", to: "/EmptyPage" },
+        //     ],
+        // },
+        // {
+        //     label: "Menu Hierarchy",
+        //     icon: "pi pi-fw pi-search",
+        //     items: [
+        //         {
+        //             label: "Submenu 1",
+        //             icon: "pi pi-fw pi-bookmark",
+        //             items: [
+        //                 {
+        //                     label: "Submenu 1.1",
+        //                     icon: "pi pi-fw pi-bookmark",
+        //                     items: [
+        //                         { label: "Submenu 1.1.1", icon: "pi pi-fw pi-bookmark" },
+        //                         { label: "Submenu 1.1.2", icon: "pi pi-fw pi-bookmark" },
+        //                         { label: "Submenu 1.1.3", icon: "pi pi-fw pi-bookmark" },
+        //                     ],
+        //                 },
+        //                 {
+        //                     label: "Submenu 1.2",
+        //                     icon: "pi pi-fw pi-bookmark",
+        //                     items: [
+        //                         { label: "Submenu 1.2.1", icon: "pi pi-fw pi-bookmark" },
+        //                         { label: "Submenu 1.2.2", icon: "pi pi-fw pi-bookmark" },
+        //                     ],
+        //                 },
+        //             ],
+        //         },
+        //         {
+        //             label: "Submenu 2",
+        //             icon: "pi pi-fw pi-bookmark",
+        //             items: [
+        //                 {
+        //                     label: "Submenu 2.1",
+        //                     icon: "pi pi-fw pi-bookmark",
+        //                     items: [
+        //                         { label: "Submenu 2.1.1", icon: "pi pi-fw pi-bookmark" },
+        //                         { label: "Submenu 2.1.2", icon: "pi pi-fw pi-bookmark" },
+        //                         { label: "Submenu 2.1.3", icon: "pi pi-fw pi-bookmark" },
+        //                     ],
+        //                 },
+        //                 {
+        //                     label: "Submenu 2.2",
+        //                     icon: "pi pi-fw pi-bookmark",
+        //                     items: [
+        //                         { label: "Submenu 2.2.1", icon: "pi pi-fw pi-bookmark" },
+        //                         { label: "Submenu 2.2.2", icon: "pi pi-fw pi-bookmark" },
+        //                     ],
+        //                 },
+        //             ],
+        //         },
+        //     ],
+        // },
+        // // { label: 'Documentation', icon: 'pi pi-fw pi-question', command: () => { window.location = "#/documentation" } },
+        // {
+        //     label: "View Source",
+        //     icon: "pi pi-fw pi-search",
+        //     command: () => {
+        //         window.location = "https://github.com/schneidersteve/sigma-react-nextjs";
+        //     },
+        // },
     ];
 
     const addClass = (element, className) => {
@@ -251,6 +254,7 @@ const App = ({ Component, pageProps }) => {
     const component = <Component {...pageProps} />;
 
     const { pathname } = useRouter();
+
     return (
         <Provider store={store}>
             <ToastContainer />
@@ -263,7 +267,7 @@ const App = ({ Component, pageProps }) => {
                             <div className="layout-logo">
                                 <img alt="Logo" src={logo} />
                             </div>
-                            <AppProfile />
+                            <AppProfile auth={auth} accountBalance={accountBalance} />
                             <AppMenu model={menu} onMenuItemClick={onMenuItemClick} />
                         </div>
                     </CSSTransition>
@@ -279,3 +283,11 @@ const App = ({ Component, pageProps }) => {
     );
 };
 export default App;
+
+App.getInitialProps = async ({ ctx }) => {
+    let auth = cookie.parse(ctx.req?.headers?.cookie || "")?.auth || null;
+    auth = JSON.parse(auth);
+    let accountBalance = null;
+    if (auth?.access_token) accountBalance = (await getWallet(`Bearer ${auth.access_token}`)).accountBalance;
+    return { auth, accountBalance };
+};

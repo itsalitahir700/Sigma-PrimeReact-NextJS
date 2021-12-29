@@ -4,10 +4,10 @@ import { CSSTransition } from "react-transition-group";
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
 
-export const AppProfile = () => {
+export const AppProfile = ({ auth, accountBalance }) => {
     const [expanded, setExpanded] = useState(false);
 
-    const { authenticationSlice } = useSelector((state) => state);
+    const { authenticationSlice, walletSlice } = useSelector((state) => state);
 
     const onClick = (event) => {
         setExpanded((prevState) => !prevState);
@@ -16,6 +16,7 @@ export const AppProfile = () => {
 
     const onLogout = () => {
         Cookies.remove("auth");
+        localStorage.removeItem("auth");
         window.location.href = "/Login";
     };
 
@@ -24,10 +25,15 @@ export const AppProfile = () => {
             <div>
                 <img src="assets/layout/images/profile.png" alt="Profile" />
             </div>
-            <button className="p-link layout-profile-link" onClick={onClick}>
-                <span className="username">{authenticationSlice?.fullName}</span>
+            <p className="p-link layout-profile-link ">
+                <b>Balance : {walletSlice?.accountBalance || accountBalance} Rs</b>
+            </p>
+            <br />
+            <button className="p-link layout-profile-link " onClick={onClick}>
+                <span className="username">{auth?.fullName || authenticationSlice?.fullName}</span>
                 <i className="pi pi-fw pi-cog" />
             </button>
+
             <CSSTransition classNames="p-toggleable-content" timeout={{ enter: 1000, exit: 450 }} in={expanded} unmountOnExit>
                 <ul className={classNames({ "layout-profile-expanded": expanded })}>
                     <li>

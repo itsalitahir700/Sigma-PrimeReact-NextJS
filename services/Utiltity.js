@@ -6,7 +6,7 @@ export const utility = async () => {
     let res = false;
     await axios({
         url: `${baseURL}/billpayment/utility-company`,
-        headers: { Authorization: auth },
+        headers: { Authorization: auth() },
     })
         .then((response) => {
             res = response.data.additionalDetail;

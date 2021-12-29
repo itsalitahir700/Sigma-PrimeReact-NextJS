@@ -8,54 +8,218 @@ import { Button } from "primereact/button";
 import { utilityCompany } from "../redux/actions/utilityAction";
 import { useDispatch, useSelector } from "react-redux";
 import { cloneDeep, groupBy } from "lodash";
+import { payBulkBill, viewBillInfo } from "../redux/actions/billAction";
+import { toast } from "react-toastify";
+import * as cookie from "cookie";
+import { getWallet } from "../redux/actions/authAction";
 
 function BulkPayment() {
+    const rows = [...Array(20)];
     const dispatch = useDispatch();
     const [checked, setChecked] = useState(false);
     const [state, setState] = useState(
-        [...Array(20)].map((_item) => {
-            return { company: "", amount: 0, utility: "", status: false, dueDate: "", mobileNo: "", consumerNo: "" };
+        rows.map((_item) => {
+            return { shortName: "", amount: 0, utility: "", status: false, dueDate: "", mobileNo: "", consumerNumber: "", error: false };
         })
     );
-
     const [utilities, setUtilities] = useState([]);
     const [groupedUtilities, setGroupedUtilities] = useState([]);
     const [companies, setCompanies] = useState([]);
-    const { utilitySlice } = useSelector((state) => state);
+    const [loadingIcon, setloadingIcon] = useState(null);
+    // const [billError, setBillError] = useState(true);
+    const [billSummary, setBillSummary] = useState(null);
+    const { utilitySlice, billSlice } = useSelector((state) => state);
+    const { authenticationSlice } = useSelector((state) => state);
+    const { paidBillSlice } = useSelector((state) => state);
+    const [changed, setChanged] = useState(false);
 
     const updateState = (val, idx, key) => {
         const newState = [...state];
+        if (key === "shortName" && idx === 0 && newState.every((item) => !item.shortName)) {
+            newState.forEach((item, idx) => {
+                // updateState(newState[0].utility, idx, "utility");
+                newState[idx].shortName = val;
+                newState[idx].utility = newState[0].utility;
+            });
+        }
         newState[idx][key] = val;
+        newState[idx] = { ...newState[idx], amount: null, dueDate: "", beforeDueDate: "", afterDueDate: "", error: false, status: false, billMonth: null };
+
         newState[idx] = activeStatus(newState[idx]);
+
         setState(newState);
+        setChanged(true);
     };
 
     const getUtility = async () => {
         await dispatch(utilityCompany());
     };
 
+    const getBillInfo = async () => {
+        setloadingIcon("pi pi-spin pi-spinner");
+        setBillSummary(null);
+        const stateData = cloneDeep(state);
+        const filteredState = [];
+        let duplicates = [];
+
+        for (let index = 0; index < stateData.length; index++) {
+            const { shortName, consumerNumber } = stateData[index];
+
+            duplicates = filteredState.length && filteredState.some((filteredItem) => filteredItem.consumerNumber === consumerNumber && filteredItem.shortName === shortName);
+            if (duplicates) {
+                break;
+            }
+            if (shortName && consumerNumber && !duplicates) {
+                filteredState.push({ shortName, consumerNumber });
+            }
+        }
+
+        if (duplicates) {
+            setloadingIcon(null);
+            toast.warn("Duplicate bills found");
+            return;
+        }
+        if (hasEmptyBills(stateData)) {
+            setloadingIcon(null);
+            toast.warn("No bills to fetch");
+            return;
+        }
+        await dispatch(viewBillInfo(filteredState));
+        setloadingIcon(null);
+    };
+
+    const getCurrentUtility = (shortName) => {
+        return utilitySlice.find((item) => item.shortName === shortName);
+    };
+
+    const hasEmptyBills = (bills) => {
+        const hasBills = bills.find((bill) => {
+            return bill.shortName && bill.consumerNumber;
+        });
+        return !!!hasBills;
+    };
+
+    const payBill = async () => {
+        setChanged(false);
+        setloadingIcon("pi pi-spin pi-spinner");
+        const stateData = cloneDeep(state);
+        const userData = cloneDeep(authenticationSlice);
+        let bills = [];
+        stateData.forEach((item) => {
+            if (item.amount) {
+                const bill = {
+                    accountId: userData.accountId,
+                    amount: item.amount,
+                    billingMonth: item.billMonth,
+                    lat: "0",
+                    lng: "0",
+                    refTo: `${item.shortName}-${item.consumerNumber}`,
+                    retailerRefNumber: "MOBILE",
+                    serviceId: getCurrentUtility(item.shortName).serviceId,
+                    serviceProvider: "NADRA",
+                };
+
+                bills.push(bill);
+            }
+        });
+        if (bills.length === 0) {
+            setloadingIcon(null);
+            toast.warn("No bills to pay");
+            return;
+        }
+        await dispatch(payBulkBill(bills));
+        setloadingIcon(null);
+        await getWallet(null, dispatch);
+    };
+
     const generateUtility = () => {
         const utilityData = cloneDeep(utilitySlice);
         const groupedUtilities = groupBy(utilityData, (item) => item.type);
         setGroupedUtilities(groupedUtilities);
-        setUtilities(Object.keys(groupedUtilities));
+        setUtilities(
+            Object.keys(groupedUtilities).map((item) => {
+                return { label: item, value: item };
+            })
+        );
     };
 
     const getCompaniesByUtility = (utility, idx) => {
-        updateState("", idx, "company");
+        updateState("", idx, "shortName");
         const groupedUtilitiesData = cloneDeep(groupedUtilities);
-        const companyNames = groupedUtilitiesData[utility].map((item) => item.shortName);
+        const companyNames = groupedUtilitiesData[utility].map((item) => {
+            return { label: item.shortName, value: item.shortName };
+        });
         const companiesData = cloneDeep(companies);
-        companiesData[idx] = companyNames;
+
+        if (!companiesData.length && !idx) {
+            state.forEach((_item, index) => {
+                companiesData[index] = companyNames;
+            });
+        } else companiesData[idx] = companyNames;
+
         setCompanies(companiesData);
     };
 
     const activeStatus = (state) => {
-        const { company, utility, consumerNo } = state;
-        if (company && utility && consumerNo) {
+        const { shortName, utility, consumerNumber } = state;
+        if (shortName && utility && consumerNumber) {
             return { ...state, status: true };
         }
         return { ...state, status: false };
+    };
+
+    const updateBillInfo = () => {
+        setChanged(false);
+        const stateData = cloneDeep(state);
+        const filteredState = [];
+        stateData.forEach((item) => {
+            billSlice.forEach((bill) => {
+                if (bill.additionalDetail.bill && item.consumerNumber === bill.additionalDetail.bill.consumerNo) {
+                    item.dueDate = bill.additionalDetail.bill.dueDate || null;
+                    item.amount = bill.additionalDetail.bill.billAmount || null;
+                    item.beforeDueDate = bill.additionalDetail.bill.amountToBePaid || null;
+                    item.afterDueDate = bill.additionalDetail.bill.lateAmount || null;
+                    item.billMonth = bill.additionalDetail.bill.billMonth || null;
+                    item.error = bill.code > 5000 || bill.code === 0 ? bill.message : false;
+                } else if (item.consumerNumber === bill.additionalDetail.consumerNumber) {
+                    item.error = bill.code > 5000 || bill.code === 0 ? bill.message : false;
+                    item.dueDate = null;
+                    item.amount = null;
+                    item.beforeDueDate = null;
+                    item.afterDueDate = null;
+                    item.billMonth = null;
+                }
+            });
+            filteredState.push(item);
+        });
+        const hasError = !stateData.every((item) => !item.error);
+        if (hasError) {
+            toast.warn("Please correct the errors");
+        }
+        setState(filteredState);
+    };
+
+    const updatePaidBillInfo = async () => {
+        const stateData = cloneDeep(state);
+        let billsTotal = { total: stateData.filter((item) => item?.status).length, success: 0, failed: 0, amount: 0 };
+        const newState = [];
+        stateData.forEach((item, index) => {
+            let newObj = { ...item };
+            if (item.shortName && item.consumerNumber) {
+                if (paidBillSlice[index] && paidBillSlice[index].code > 0 && paidBillSlice[index].code < 5001) {
+                    billsTotal.success = billsTotal.success + 1;
+                    billsTotal.amount = billsTotal.amount + paidBillSlice[index].additionalDetail.amount;
+                } else {
+                    billsTotal.failed = billsTotal.failed + 1;
+                }
+                if (paidBillSlice[index] && "additionalDetail" in paidBillSlice[index]) {
+                    newObj.additionalDetail = paidBillSlice[index]?.additionalDetail;
+                }
+            }
+            newState.push(newObj);
+        });
+        setBillSummary(billsTotal);
+        setState(newState);
     };
 
     useEffect(() => {
@@ -66,29 +230,50 @@ function BulkPayment() {
         if (utilitySlice) generateUtility();
     }, [utilitySlice]);
 
+    useEffect(() => {
+        setChecked(state.every((item) => item.status));
+    }, [state]);
+
+    useEffect(() => {
+        if (billSlice && billSlice.length) updateBillInfo();
+    }, [billSlice]);
+
+    useEffect(() => {
+        if (paidBillSlice && paidBillSlice.length) updatePaidBillInfo();
+    }, [paidBillSlice]);
+
     return (
         <LayoutCard>
             <div className="Table">
                 <div className="Table-row Table-header">
                     <div className="Table-row-item">
-                        <Checkbox disabled onChange={(e) => setChecked(e.checked)} checked={checked}></Checkbox>
+                        <Checkbox disabled checked={checked}></Checkbox>
                     </div>
                     <div className="Table-row-item">Utility</div>
                     <div className="Table-row-item">Company</div>
                     <div className="Table-row-item">Consumer No</div>
-                    <div className="Table-row-item">Mobile No</div>
-                    <div className="Table-row-item">Amount</div>
-                    <div className="Table-row-item">Due Date</div>
+                    <div className="Table-row-item">{state.some((item) => item.additionalDetail) ? "Transaction Id" : "Mobile No"}</div>
+                    <div className="Table-row-item">{state.some((item) => item.additionalDetail) ? "Status" : "Due Date"}</div>
+                    <div className="Table-row-item">Amount Payable</div>
+                    <div className="Table-row-item">Before Due Date</div>
+                    <div className="Table-row-item">After Due Date</div>
                 </div>
                 <div className="row-collection p-mt-4">
-                    {[...Array(20)].map((_item, idx) => (
+                    {rows.map((_item, idx) => (
                         <div className="Table-row" key={idx}>
-                            <div className="Table-row-item" data-header="Action">
-                                <Checkbox disabled onChange={(e) => updateState(e.checked, idx, "status")} checked={state[idx]?.status || false}></Checkbox>
+                            <div className="Table-row-item" data-header="Status">
+                                {!changed && state[idx]?.additionalDetail?.transactionStatus?.toLowerCase() === "success" ? (
+                                    <i style={{ fontSize: "1.4em" }} className="pi pi-check-square icon-success" />
+                                ) : state[idx]?.error && !changed ? (
+                                    <i style={{ fontSize: "1.4em" }} className="pi pi-exclamation-triangle icon-warn" popupTitle={state[idx].error} />
+                                ) : (
+                                    <Checkbox disabled onChange={(e) => updateState(e.checked, idx, "status")} checked={state[idx]?.status || false}></Checkbox>
+                                )}
                             </div>
                             <div className="Table-row-item" data-header="Utility">
                                 <Dropdown
                                     value={state[idx]?.utility || false}
+                                    // disabled={billSummary}
                                     onChange={(e) => {
                                         updateState(e.value, idx, "utility");
                                         getCompaniesByUtility(e.value, idx);
@@ -96,47 +281,102 @@ function BulkPayment() {
                                     options={utilities}
                                 />
                             </div>
-                            <div className="Table-row-item" data-header="OS">
+                            <div className="Table-row-item" data-header="Company">
                                 <Dropdown
-                                    value={state[idx]?.company || false}
-                                    disabled={!state[idx]?.utility}
+                                    value={state[idx]?.shortName || false}
+                                    // disabled={!state[idx]?.utility || billSummary}
                                     onChange={(e) => {
-                                        updateState(e.value, idx, "company");
+                                        updateState(e.value, idx, "shortName");
                                     }}
                                     options={companies[idx]}
                                 />
                             </div>
-                            <div className="Table-row-item" data-header="Country">
+                            <div className="Table-row-item" data-header="Consumer No">
                                 <InputText
+                                    // disabled={billSummary}
                                     onChange={(e) => {
-                                        updateState(e.target.value, idx, "consumerNo");
+                                        updateState(e.target.value, idx, "consumerNumber");
                                     }}
-                                    value={state[idx]?.consumerNo || ""}
+                                    value={state[idx]?.consumerNumber || ""}
                                 />
                             </div>
-                            <div className="Table-row-item" data-header="Uploaded on">
-                                <InputText
-                                    onChange={(e) => {
-                                        updateState(e.target.value, idx, "mobileNo");
-                                    }}
-                                    value={state[idx]?.mobileNo || ""}
-                                />
+                            <div className="Table-row-item" data-header="Mobile No">
+                                {state[idx]?.additionalDetail?.id ? (
+                                    state[idx]?.additionalDetail?.id
+                                ) : (
+                                    <InputText
+                                        // disabled={billSummary}
+                                        onChange={(e) => {
+                                            updateState(e.target.value, idx, "mobileNo");
+                                        }}
+                                        value={state[idx]?.mobileNo || ""}
+                                    />
+                                )}
                             </div>
-                            <div className="Table-row-item" data-header="Length">
-                                -
+                            <div className="Table-row-item" data-header="Due Date">
+                                {state[idx]?.additionalDetail?.transactionStatus ? <span className={state[idx]?.additionalDetail?.transactionStatus?.toLowerCase() === "success" ? "text-success" : "text-warn"}>{state[idx]?.additionalDetail?.transactionStatus}</span> : state[idx]?.dueDate || "-"}
                             </div>
-                            <div className="Table-row-item" data-header="Length">
-                                -
+                            <div className="Table-row-item" data-header="Amount">
+                                {state[idx]?.amount || "-"}
+                            </div>
+                            <div className="Table-row-item" data-header="Before Due Date">
+                                {state[idx]?.beforeDueDate || "-"}
+                            </div>
+                            <div className="Table-row-item" data-header="After Due Date">
+                                {state[idx]?.afterDueDate || "-"}
                             </div>
                         </div>
                     ))}
                 </div>
             </div>
-            <div className="p-mt-4">
-                <Button label="Fetch" />
-            </div>
+            {!billSummary || changed ? (
+                <div className="p-mt-4">
+                    {!billSlice.length || changed ? <Button label="Fetch" onClick={getBillInfo} icon={loadingIcon || ""} iconPos="right" disabled={loadingIcon} /> : <Button label="Pay Bill" onClick={payBill} icon={loadingIcon || ""} iconPos="right" disabled={loadingIcon} />}
+                </div>
+            ) : null}
+            {billSummary && !changed ? (
+                <div className="p-mt-4">
+                    <div className="p-d-flex p-jc-between">
+                        <div>
+                            <h5 className="text-primary ">Bill Summary</h5>
+                        </div>
+                        <Button label="Reset" className="p-button-sm" onClick={() => (window.location.href = "/BulkPayment")} />
+                    </div>
+                    <div className="p-grid p-py-1 bg-grey">
+                        <div className="p-col-3 ">Total</div>
+                        <div className="p-col-2">{billSummary.total}</div>
+                    </div>
+                    <div className="p-grid p-py-1 ">
+                        <div className="p-col-3">Success</div>
+                        <div className="p-col-2">{billSummary.success}</div>
+                    </div>
+                    <div className="p-grid p-py-1 bg-grey">
+                        <div className="p-col-3">Fail</div>
+                        <div className="p-col-2">{billSummary.failed}</div>
+                    </div>
+                    <div className="p-grid p-py-1 ">
+                        <div className="p-col-3">Total Amount Paid</div>
+                        <div className="p-col-2">Rs. {billSummary.amount}</div>
+                    </div>
+                </div>
+            ) : null}
         </LayoutCard>
     );
 }
 
 export default BulkPayment;
+
+export async function getServerSideProps(context) {
+    const { req } = context;
+    const { auth } = cookie.parse(req ? req.headers.cookie || "" : document.cookie);
+    if (!auth) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/Login",
+            },
+        };
+    }
+
+    return { props: {} };
+}
