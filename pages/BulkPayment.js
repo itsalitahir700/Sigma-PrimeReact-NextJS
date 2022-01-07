@@ -15,13 +15,12 @@ import { getWallet } from "../redux/actions/authAction";
 
 function BulkPayment() {
     const rows = [...Array(20)];
+    const initialState = rows.map((_item) => {
+        return { shortName: "", amount: 0, utility: "", status: false, dueDate: "", mobileNo: "", consumerNumber: "", error: false, isDuplicate: false };
+    });
     const dispatch = useDispatch();
     const [checked, setChecked] = useState(false);
-    const [state, setState] = useState(
-        rows.map((_item) => {
-            return { shortName: "", amount: 0, utility: "", status: false, dueDate: "", mobileNo: "", consumerNumber: "", error: false };
-        })
-    );
+    const [state, setState] = useState(initialState);
     const [utilities, setUtilities] = useState([]);
     const [groupedUtilities, setGroupedUtilities] = useState([]);
     const [companies, setCompanies] = useState([]);
@@ -33,13 +32,15 @@ function BulkPayment() {
     const { paidBillSlice } = useSelector((state) => state);
     const [changed, setChanged] = useState(false);
 
-    const updateState = (val, idx, key) => {
+    const updateState = (val, idx, key, flag = true) => {
         const newState = [...state];
-        if (key === "shortName" && idx === 0 && newState.every((item) => !item.shortName)) {
-            newState.forEach((item, idx) => {
+        if (key === "shortName" && flag) {
+            newState.forEach((item, index) => {
                 // updateState(newState[0].utility, idx, "utility");
-                newState[idx].shortName = val;
-                newState[idx].utility = newState[0].utility;
+                if (index >= idx) {
+                    newState[index][key] = val;
+                    newState[index].utility = newState[idx].utility;
+                }
             });
         }
         newState[idx][key] = val;
@@ -65,8 +66,13 @@ function BulkPayment() {
         for (let index = 0; index < stateData.length; index++) {
             const { shortName, consumerNumber } = stateData[index];
 
-            duplicates = filteredState.length && filteredState.some((filteredItem) => filteredItem.consumerNumber === consumerNumber && filteredItem.shortName === shortName);
-            if (duplicates) {
+            duplicates =
+                filteredState.length &&
+                filteredState.filter((filteredItem) => {
+                    if (filteredItem.consumerNumber === consumerNumber && filteredItem.shortName === shortName) return filteredItem;
+                    return null;
+                });
+            if (duplicates.length) {
                 break;
             }
             if (shortName && consumerNumber && !duplicates) {
@@ -74,16 +80,30 @@ function BulkPayment() {
             }
         }
 
-        if (duplicates) {
+        if (duplicates.length) {
+            const newState = stateData.map((item) => {
+                if (item.consumerNumber === duplicates[0].consumerNumber && item.shortName === duplicates[0].shortName) {
+                    item.isDuplicate = true;
+                }
+                return item;
+            });
+            setState(newState);
             setloadingIcon(null);
             toast.warn("Duplicate bills found");
             return;
         }
+        const newState = stateData.map((item) => {
+            item.isDuplicate = false;
+            return item;
+        });
+        setState(newState);
+
         if (hasEmptyBills(stateData)) {
             setloadingIcon(null);
             toast.warn("No bills to fetch");
             return;
         }
+
         await dispatch(viewBillInfo(filteredState));
         setloadingIcon(null);
     };
@@ -143,19 +163,19 @@ function BulkPayment() {
         );
     };
 
-    const getCompaniesByUtility = (utility, idx) => {
-        updateState("", idx, "shortName");
+    const getCompaniesByUtility = (utility, idx, flag = true) => {
+        if (flag) updateState("", idx, "shortName", false);
         const groupedUtilitiesData = cloneDeep(groupedUtilities);
         const companyNames = groupedUtilitiesData[utility].map((item) => {
             return { label: item.shortName, value: item.shortName };
         });
         const companiesData = cloneDeep(companies);
 
-        if (!companiesData.length && !idx) {
-            state.forEach((_item, index) => {
-                companiesData[index] = companyNames;
-            });
-        } else companiesData[idx] = companyNames;
+        // if (!companiesData.length && !idx) {
+        state.forEach((_item, index) => {
+            if (index >= idx) companiesData[index] = companyNames;
+        });
+        // } else companiesData[idx] = companyNames;
 
         setCompanies(companiesData);
     };
@@ -166,6 +186,16 @@ function BulkPayment() {
             return { ...state, status: true };
         }
         return { ...state, status: false };
+    };
+
+    const resetRow = (idx = null) => {
+        if (idx === null) {
+            setState(initialState);
+            return;
+        }
+        const newState = cloneDeep(state);
+        newState[idx] = { shortName: "", amount: 0, utility: "", status: false, dueDate: "", mobileNo: "", consumerNumber: "", error: false, isDuplicate: false };
+        setState(newState);
     };
 
     const updateBillInfo = () => {
@@ -241,34 +271,38 @@ function BulkPayment() {
     useEffect(() => {
         if (paidBillSlice && paidBillSlice.length) updatePaidBillInfo();
     }, [paidBillSlice]);
-
+    console.log(state);
     return (
         <LayoutCard>
             <div className="Table">
                 <div className="Table-row Table-header">
                     <div className="Table-row-item">
-                        <Checkbox disabled checked={checked}></Checkbox>
+                        <Button icon="pi pi-times" tooltip="Reset Row" onClick={() => resetRow()} className="p-button-rounded p-button-danger p-button-text" />
+
+                        {/* <Checkbox disabled checked={checked}></Checkbox> */}
                     </div>
                     <div className="Table-row-item">Utility</div>
                     <div className="Table-row-item">Company</div>
                     <div className="Table-row-item">Consumer No</div>
                     <div className="Table-row-item">{state.some((item) => item.additionalDetail) ? "Transaction Id" : "Mobile No"}</div>
-                    <div className="Table-row-item">{state.some((item) => item.additionalDetail) ? "Status" : "Due Date"}</div>
                     <div className="Table-row-item">Amount Payable</div>
-                    <div className="Table-row-item">Before Due Date</div>
-                    <div className="Table-row-item">After Due Date</div>
+                    <div className="Table-row-item">{state.some((item) => item.additionalDetail) ? "Status" : "Due Date"}</div>
+                    <div className="Table-row-item">Message</div>
+                    {/* <div className="Table-row-item">Before Due Date</div>
+                    <div className="Table-row-item">After Due Date</div> */}
                 </div>
                 <div className="row-collection p-mt-4">
                     {rows.map((_item, idx) => (
-                        <div className="Table-row" key={idx}>
+                        <div className={state[idx]?.isDuplicate ? "duplicate-row Table-row" : state[idx]?.error ? "error-row Table-row" : "Table-row"} key={idx}>
                             <div className="Table-row-item" data-header="Status">
-                                {!changed && state[idx]?.additionalDetail?.transactionStatus?.toLowerCase() === "success" ? (
+                                <Button icon="pi pi-times" tooltip="Reset Row" onClick={() => resetRow(idx)} className="p-button-rounded p-button-danger p-button-text" />
+                                {/* {!changed && state[idx]?.additionalDetail?.transactionStatus?.toLowerCase() === "success" ? (
                                     <i style={{ fontSize: "1.4em" }} className="pi pi-check-square icon-success" />
                                 ) : state[idx]?.error && !changed ? (
                                     <i style={{ fontSize: "1.4em" }} className="pi pi-exclamation-triangle icon-warn" popupTitle={state[idx].error} />
                                 ) : (
                                     <Checkbox disabled onChange={(e) => updateState(e.checked, idx, "status")} checked={state[idx]?.status || false}></Checkbox>
-                                )}
+                                )} */}
                             </div>
                             <div className="Table-row-item" data-header="Utility">
                                 <Dropdown
@@ -287,6 +321,7 @@ function BulkPayment() {
                                     // disabled={!state[idx]?.utility || billSummary}
                                     onChange={(e) => {
                                         updateState(e.value, idx, "shortName");
+                                        getCompaniesByUtility(state[idx]?.utility, idx, false);
                                     }}
                                     options={companies[idx]}
                                 />
@@ -313,18 +348,21 @@ function BulkPayment() {
                                     />
                                 )}
                             </div>
-                            <div className="Table-row-item" data-header="Due Date">
-                                {state[idx]?.additionalDetail?.transactionStatus ? <span className={state[idx]?.additionalDetail?.transactionStatus?.toLowerCase() === "success" ? "text-success" : "text-warn"}>{state[idx]?.additionalDetail?.transactionStatus}</span> : state[idx]?.dueDate || "-"}
-                            </div>
                             <div className="Table-row-item" data-header="Amount">
                                 {state[idx]?.amount || "-"}
                             </div>
-                            <div className="Table-row-item" data-header="Before Due Date">
+                            <div className="Table-row-item" data-header="Due Date">
+                                {state[idx]?.additionalDetail?.transactionStatus ? <span className={state[idx]?.additionalDetail?.transactionStatus?.toLowerCase() === "success" ? "text-success" : "text-warn"}>{state[idx]?.additionalDetail?.transactionStatus}</span> : state[idx]?.dueDate || "-"}
+                            </div>
+                            <div className="Table-row-item">
+                                <small>{state[idx].error || (state[idx].isDuplicate && "Duplicate Entry")}</small>
+                            </div>
+                            {/* <div className="Table-row-item" data-header="Before Due Date">
                                 {state[idx]?.beforeDueDate || "-"}
                             </div>
                             <div className="Table-row-item" data-header="After Due Date">
                                 {state[idx]?.afterDueDate || "-"}
-                            </div>
+                            </div> */}
                         </div>
                     ))}
                 </div>

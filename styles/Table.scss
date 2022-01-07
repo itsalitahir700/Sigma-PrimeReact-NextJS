@@ -18,6 +18,14 @@
     -ms-flex-pack: justify;
     font-size: 1rem;
 }
+.duplicate-row {
+    background-color: rgb(248, 213, 218) !important;
+    transition: 500ms;
+}
+.error-row {
+    background-color: rgb(247, 204, 175) !important;
+    transition: 500ms;
+}
 .Table-header {
     display: none;
 }
@@ -59,6 +67,10 @@
     .Table-row-item:nth-child(#{$i + 1}) {
         width: 20%;
     }
+}
+
+.Table-row-item:last-child {
+    width: 18%;
 }
 
 .Table-row-item:before {
