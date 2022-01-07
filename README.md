@@ -1,3 +1,24 @@
+# Database:
+Postgre SQL Database which is the main and only datasource as of now. 
+66.29.133.35:5432
+db: dapdevs_biota_mvp
+user: dapdevs_tech_innovators
+pwd: tech_innovators$2021 
+
+# API:
+- The Rest API is build with PHP and composer. 
+- This API is a traditional API which has the standard HTTP request methods for each table: CRUD
+- This API uses JWT tokens as a security mechanism, where users authenticate using user and password to obtain a JWT token that must be sent as a header on every transaction. 
+- - This JWT expires and can be renewed.
+
+## API Documentation:
+- The API documentation can be found on the following resources:
+- - Swagger:
+- - Postman collection: 
+
+# Git Branching
+We will use 3 main branches: dev (where developers can merge in their work), test (where we test and validate finished features), main (where we deploy tested and validated features which are safe to share with users)
+
 # [Material Dashboard 2 PRO React](http://demos.creative-tim.com/material-dashboard-pro-react/#/dashboards/analytics?ref=readme-mdpr) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?url=https://www.creative-tim.com/product/material-dashboard-pro-react&text=Check%20Material%20Dashboard%202%20Pro%React%20made%20by%20@CreativeTim%20#webdesign%20#dashboard%20#materialdesign%20#react%20https://www.creative-tim.com/product/material-dashboard-pro-react)
 
 ![version](https://img.shields.io/badge/version-2.0.0-blue.svg) [![GitHub issues open](https://img.shields.io/github/issues/creativetimofficial/ct-material-dashboard-pro-react.svg)](https://github.com/creativetimofficial/ct-material-dashboard-react-ui/issues?q=is%3Aopen+is%3Aissue) [![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/creativetimofficial/ct-material-dashboard-pro-react.svg)](https://github.com/creativetimofficial/ct-material-dashboard-pro-react/issues?q=is%3Aissue+is%3Aclosed)
