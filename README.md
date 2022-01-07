@@ -1,9 +1,9 @@
 # Database:
 Postgre SQL Database which is the main and only datasource as of now. 
-66.29.133.35:5432
-db: dapdevs_biota_mvp
-user: dapdevs_tech_innovators
-pwd: tech_innovators$2021 
+- 66.29.133.35:5432
+- db: dapdevs_biota_mvp
+- user: dapdevs_tech_innovators
+- pwd: tech_innovators$2021 
 
 # API:
 - The Rest API is build with PHP and composer. 
