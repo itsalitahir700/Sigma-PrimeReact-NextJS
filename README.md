@@ -13,8 +13,8 @@ Postgre SQL Database which is the main and only datasource as of now.
 
 ## API Documentation:
 - The API documentation can be found on the following resources:
-- - Swagger:
-- - Postman collection: 
+- - Swagger: http://biota.dapdevs.com/swagger/
+- - Postman collection: https://documenter.getpostman.com/view/15988299/UVXdMxpu
 
 # Git Branching
 We will use 3 main branches: dev (where developers can merge in their work), test (where we test and validate finished features), main (where we deploy tested and validated features which are safe to share with users)
