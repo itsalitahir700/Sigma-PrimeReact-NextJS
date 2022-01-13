@@ -9,7 +9,7 @@ import { AppConfig } from "../src/AppConfig";
 import { useRouter } from "next/router";
 import { Provider } from "react-redux";
 import PrimeReact from "primereact/utils";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, Zoom } from "react-toastify";
 import * as cookie from "cookie";
 
 import store from "../redux/store";
@@ -257,7 +257,7 @@ const App = ({ Component, pageProps, auth, accountBalance }) => {
 
     return (
         <Provider store={store}>
-            <ToastContainer />
+            <ToastContainer transition={Zoom} autoClose={50000} hideProgressBar={true} position="top-center" draggable pauseOnHover />
             {pathname !== "/Login" ? (
                 <div className={wrapperClass} onClick={onWrapperClick}>
                     <AppTopbar onToggleMenu={onToggleMenu} />
@@ -284,10 +284,10 @@ const App = ({ Component, pageProps, auth, accountBalance }) => {
 };
 export default App;
 
-App.getInitialProps = async ({ ctx }) => {
-    let auth = cookie.parse(ctx.req?.headers?.cookie || "")?.auth || null;
-    auth = JSON.parse(auth);
-    let accountBalance = null;
-    if (auth?.access_token) accountBalance = (await getWallet(`Bearer ${auth.access_token}`)).accountBalance;
-    return { auth, accountBalance };
-};
+// App.getInitialProps = async ({ ctx }) => {
+//     let auth = cookie.parse(ctx.req?.headers?.cookie || "")?.auth || null;
+//     auth = JSON.parse(auth);
+//     let accountBalance = null;
+//     if (auth?.access_token) accountBalance = (await getWallet(`Bearer ${auth.access_token}`)).accountBalance;
+//     return { auth, accountBalance };
+// };

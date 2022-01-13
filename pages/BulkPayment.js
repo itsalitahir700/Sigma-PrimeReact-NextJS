@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import LayoutCard from "../src/layout";
-import { Checkbox } from "primereact/checkbox";
+// import { Checkbox } from "primereact/checkbox";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { useState, useEffect } from "react";
@@ -12,6 +12,9 @@ import { payBulkBill, viewBillInfo } from "../redux/actions/billAction";
 import { toast } from "react-toastify";
 import * as cookie from "cookie";
 import { getWallet } from "../redux/actions/authAction";
+import { motion } from "framer-motion";
+import { confirmPopup } from "primereact/confirmpopup";
+import { wallet } from "../services/Auth";
 
 function BulkPayment() {
     const rows = [...Array(20)];
@@ -19,7 +22,7 @@ function BulkPayment() {
         return { shortName: "", amount: 0, utility: "", status: false, dueDate: "", mobileNo: "", consumerNumber: "", error: false, isDuplicate: false };
     });
     const dispatch = useDispatch();
-    const [checked, setChecked] = useState(false);
+    // const [checked, setChecked] = useState(false);
     const [state, setState] = useState(initialState);
     const [utilities, setUtilities] = useState([]);
     const [groupedUtilities, setGroupedUtilities] = useState([]);
@@ -65,17 +68,16 @@ function BulkPayment() {
 
         for (let index = 0; index < stateData.length; index++) {
             const { shortName, consumerNumber } = stateData[index];
-
             duplicates =
                 filteredState.length &&
                 filteredState.filter((filteredItem) => {
                     if (filteredItem.consumerNumber === consumerNumber && filteredItem.shortName === shortName) return filteredItem;
                     return null;
                 });
-            if (duplicates.length) {
+            if (duplicates && duplicates.length) {
                 break;
             }
-            if (shortName && consumerNumber && !duplicates) {
+            if (shortName && consumerNumber && !duplicates.length) {
                 filteredState.push({ shortName, consumerNumber });
             }
         }
@@ -103,7 +105,7 @@ function BulkPayment() {
             toast.warn("No bills to fetch");
             return;
         }
-
+        // console.log(filteredState);
         await dispatch(viewBillInfo(filteredState));
         setloadingIcon(null);
     };
@@ -188,9 +190,15 @@ function BulkPayment() {
         return { ...state, status: false };
     };
 
-    const resetRow = (idx = null) => {
+    const resetRow = (idx = null, event) => {
         if (idx === null) {
-            setState(initialState);
+            confirmPopup({
+                target: event.currentTarget,
+                message: "Are you sure you want to clear all inputs?",
+                icon: "pi pi-info-circle p-button-danger",
+                acceptClassName: "p-button-danger",
+                accept: () => setState(initialState),
+            });
             return;
         }
         const newState = cloneDeep(state);
@@ -235,7 +243,7 @@ function BulkPayment() {
         const newState = [];
         stateData.forEach((item, index) => {
             let newObj = { ...item };
-            if (item.shortName && item.consumerNumber) {
+            if (item.shortName && item.consumerNumber && item.amount) {
                 if (paidBillSlice[index] && paidBillSlice[index].code > 0 && paidBillSlice[index].code < 5001) {
                     billsTotal.success = billsTotal.success + 1;
                     billsTotal.amount = billsTotal.amount + paidBillSlice[index].additionalDetail.amount;
@@ -253,6 +261,13 @@ function BulkPayment() {
     };
 
     useEffect(() => {
+        async function wallet() {
+            await getWallet(null, dispatch);
+        }
+        wallet();
+    }, []);
+
+    useEffect(() => {
         getUtility();
     }, []);
 
@@ -261,7 +276,7 @@ function BulkPayment() {
     }, [utilitySlice]);
 
     useEffect(() => {
-        setChecked(state.every((item) => item.status));
+        // setChecked(state.every((item) => item.status));
     }, [state]);
 
     useEffect(() => {
@@ -271,13 +286,62 @@ function BulkPayment() {
     useEffect(() => {
         if (paidBillSlice && paidBillSlice.length) updatePaidBillInfo();
     }, [paidBillSlice]);
-    console.log(state);
+
     return (
         <LayoutCard>
-            <div className="Table">
+            {!changed ? (
+                <motion.div key={billSummary} initial={{ y: 30, opacity: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+                    <div className="p-d-flex p-jc-between">
+                        <div>
+                            <h5 className="text-primary ">Fetch Summary</h5>
+                        </div>
+                        <Button label="Reset" className="p-button-sm" onClick={() => (window.location.href = "/BulkPayment")} />
+                    </div>
+                    <div className="p-grid p-py-1 bg-grey">
+                        <div className="p-col-3 ">Total</div>
+                        <div className="p-col-2">{billSummary?.total || "-"}</div>
+                    </div>
+                    <div className="p-grid p-py-1 ">
+                        <div className="p-col-3">Fetched</div>
+                        <div className="p-col-2">{billSummary?.success || "-"}</div>
+                    </div>
+                    <div className="p-grid p-py-1 ">
+                        <div className="p-col-3">Total Paybale Amount</div>
+                        <div className="p-col-2">Rs. {billSummary?.amount || "-"}</div>
+                    </div>
+                </motion.div>
+            ) : null}
+
+            {billSummary && !changed ? (
+                <motion.div key={billSummary} initial={{ y: 30, opacity: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+                    <div className="p-d-flex p-jc-between">
+                        <div>
+                            <h5 className="text-primary ">Bill Summary</h5>
+                        </div>
+                        <Button label="Reset" className="p-button-sm" onClick={() => (window.location.href = "/BulkPayment")} />
+                    </div>
+                    <div className="p-grid p-py-1 bg-grey">
+                        <div className="p-col-3 ">Total</div>
+                        <div className="p-col-2">{billSummary?.total || "-"}</div>
+                    </div>
+                    <div className="p-grid p-py-1 ">
+                        <div className="p-col-3">Success</div>
+                        <div className="p-col-2">{billSummary?.success || "-"}</div>
+                    </div>
+                    <div className="p-grid p-py-1 bg-grey">
+                        <div className="p-col-3">Fail</div>
+                        <div className="p-col-2">{billSummary?.failed || "-"}</div>
+                    </div>
+                    <div className="p-grid p-py-1 ">
+                        <div className="p-col-3">Total Amount Paid</div>
+                        <div className="p-col-2">Rs. {billSummary?.amount || "-"}</div>
+                    </div>
+                </motion.div>
+            ) : null}
+            <motion.div key={billSummary} initial={{ y: -30, opacity: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="Table p-mt-4">
                 <div className="Table-row Table-header">
                     <div className="Table-row-item">
-                        <Button icon="pi pi-times" tooltip="Reset Row" onClick={() => resetRow()} className="p-button-rounded p-button-danger p-button-text" />
+                        <Button icon="pi pi-times" tooltip="Reset All" onClick={(e) => resetRow(null, e)} className="p-button-rounded p-button-danger p-button-text" />
 
                         {/* <Checkbox disabled checked={checked}></Checkbox> */}
                     </div>
@@ -352,7 +416,11 @@ function BulkPayment() {
                                 {state[idx]?.amount || "-"}
                             </div>
                             <div className="Table-row-item" data-header="Due Date">
-                                {state[idx]?.additionalDetail?.transactionStatus ? <span className={state[idx]?.additionalDetail?.transactionStatus?.toLowerCase() === "success" ? "text-success" : "text-warn"}>{state[idx]?.additionalDetail?.transactionStatus}</span> : state[idx]?.dueDate || "-"}
+                                {state[idx]?.additionalDetail?.transactionStatus ? (
+                                    <span className={state[idx]?.additionalDetail?.transactionStatus?.toLowerCase() === "success" ? "text-success" : "text-warn"}>{state[idx]?.additionalDetail?.transactionStatus?.toLowerCase() === "success" ? "Paid" : "-"}</span>
+                                ) : (
+                                    state[idx]?.dueDate || "-"
+                                )}
                             </div>
                             <div className="Table-row-item">
                                 <small>{state[idx].error || (state[idx].isDuplicate && "Duplicate Entry")}</small>
@@ -366,36 +434,10 @@ function BulkPayment() {
                         </div>
                     ))}
                 </div>
-            </div>
+            </motion.div>
             {!billSummary || changed ? (
                 <div className="p-mt-4">
                     {!billSlice.length || changed ? <Button label="Fetch" onClick={getBillInfo} icon={loadingIcon || ""} iconPos="right" disabled={loadingIcon} /> : <Button label="Pay Bill" onClick={payBill} icon={loadingIcon || ""} iconPos="right" disabled={loadingIcon} />}
-                </div>
-            ) : null}
-            {billSummary && !changed ? (
-                <div className="p-mt-4">
-                    <div className="p-d-flex p-jc-between">
-                        <div>
-                            <h5 className="text-primary ">Bill Summary</h5>
-                        </div>
-                        <Button label="Reset" className="p-button-sm" onClick={() => (window.location.href = "/BulkPayment")} />
-                    </div>
-                    <div className="p-grid p-py-1 bg-grey">
-                        <div className="p-col-3 ">Total</div>
-                        <div className="p-col-2">{billSummary.total}</div>
-                    </div>
-                    <div className="p-grid p-py-1 ">
-                        <div className="p-col-3">Success</div>
-                        <div className="p-col-2">{billSummary.success}</div>
-                    </div>
-                    <div className="p-grid p-py-1 bg-grey">
-                        <div className="p-col-3">Fail</div>
-                        <div className="p-col-2">{billSummary.failed}</div>
-                    </div>
-                    <div className="p-grid p-py-1 ">
-                        <div className="p-col-3">Total Amount Paid</div>
-                        <div className="p-col-2">Rs. {billSummary.amount}</div>
-                    </div>
                 </div>
             ) : null}
         </LayoutCard>

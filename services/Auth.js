@@ -14,7 +14,7 @@ export const login = async ({ username, password, deviceId }) => {
         .then((response) => {
             res = response.data.additionalDetail;
             if (response.data.code < 20001 || response.data.code > 25000) throw response.data.message;
-            toast.success(response.data.message);
+            // toast.success(response.data.message);
         })
         .catch((err) => {
             toast.warn(err || "Something went wrong");
