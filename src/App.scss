@@ -766,6 +766,15 @@ pre[class*="language-"] {
 .text-primary {
     color: #0388e5;
 }
+.text-success {
+    color: green;
+}
+.text-danger {
+    color: red;
+}
+.text-warning {
+    color: orange;
+}
 .Toastify__toast-container {
     z-index: 99999;
     top: 50%;

@@ -30,10 +30,12 @@ function BulkPayment() {
     const [loadingIcon, setloadingIcon] = useState(null);
     // const [billError, setBillError] = useState(true);
     const [billSummary, setBillSummary] = useState(null);
+    const [fetchSummary, setFetchSummary] = useState(null);
     const { utilitySlice, billSlice } = useSelector((state) => state);
     const { authenticationSlice } = useSelector((state) => state);
     const { paidBillSlice } = useSelector((state) => state);
     const [changed, setChanged] = useState(false);
+    const [disabled, setDisabled] = useState(false);
 
     const updateState = (val, idx, key, flag = true) => {
         const newState = [...state];
@@ -235,29 +237,52 @@ function BulkPayment() {
             toast.warn("Please correct the errors");
         }
         setState(filteredState);
+        updateFetchSummary();
     };
 
     const updatePaidBillInfo = async () => {
         const stateData = cloneDeep(state);
         let billsTotal = { total: stateData.filter((item) => item?.status).length, success: 0, failed: 0, amount: 0 };
         const newState = [];
+        let indx = 0;
         stateData.forEach((item, index) => {
             let newObj = { ...item };
             if (item.shortName && item.consumerNumber && item.amount) {
-                if (paidBillSlice[index] && paidBillSlice[index].code > 0 && paidBillSlice[index].code < 5001) {
+                if (paidBillSlice[indx] && paidBillSlice[indx].code > 0 && paidBillSlice[indx].code < 5001) {
                     billsTotal.success = billsTotal.success + 1;
-                    billsTotal.amount = billsTotal.amount + paidBillSlice[index].additionalDetail.amount;
+                    billsTotal.amount = billsTotal.amount + paidBillSlice[indx].additionalDetail.amount;
                 } else {
                     billsTotal.failed = billsTotal.failed + 1;
                 }
-                if (paidBillSlice[index] && "additionalDetail" in paidBillSlice[index]) {
-                    newObj.additionalDetail = paidBillSlice[index]?.additionalDetail;
+                if (paidBillSlice[indx] && "additionalDetail" in paidBillSlice[indx]) {
+                    newObj.additionalDetail = paidBillSlice[indx]?.additionalDetail;
                 }
+                indx = indx + 1;
+            } else if (item.shortName && item.consumerNumber) {
+                billsTotal.failed = billsTotal.failed + 1;
             }
             newState.push(newObj);
         });
+        setFetchSummary(null);
         setBillSummary(billsTotal);
         setState(newState);
+        setDisabled(true);
+    };
+
+    const updateFetchSummary = () => {
+        const stateData = cloneDeep(state);
+        let billsTotal = { total: stateData.filter((item) => item?.consumerNumber && item.shortName).length, fetched: 0, amount: 0 };
+        stateData.forEach((item, index) => {
+            if (item.shortName && item.consumerNumber) {
+                if (billSlice[index] && billSlice[index].code > 0 && billSlice[index].code < 5001) {
+                    billsTotal.fetched = billsTotal.fetched + 1;
+                    billsTotal.amount = billsTotal.amount + Number(billSlice[index].additionalDetail.bill.billAmount);
+                } else {
+                    billsTotal.failed = billsTotal.failed + 1;
+                }
+            }
+        });
+        setFetchSummary(billsTotal);
     };
 
     useEffect(() => {
@@ -289,8 +314,10 @@ function BulkPayment() {
 
     return (
         <LayoutCard>
-            {!changed ? (
-                <motion.div key={billSummary} initial={{ y: 30, opacity: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            {fetchSummary && !changed && !billSummary ? (
+                <motion.div
+                // key={fetchSummary} initial={{ y: 30, opacity: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+                >
                     <div className="p-d-flex p-jc-between">
                         <div>
                             <h5 className="text-primary ">Fetch Summary</h5>
@@ -299,21 +326,23 @@ function BulkPayment() {
                     </div>
                     <div className="p-grid p-py-1 bg-grey">
                         <div className="p-col-3 ">Total</div>
-                        <div className="p-col-2">{billSummary?.total || "-"}</div>
+                        <div className="p-col-2">{fetchSummary?.total || "-"}</div>
                     </div>
                     <div className="p-grid p-py-1 ">
                         <div className="p-col-3">Fetched</div>
-                        <div className="p-col-2">{billSummary?.success || "-"}</div>
+                        <div className="p-col-2">{fetchSummary?.fetched || "-"}</div>
                     </div>
-                    <div className="p-grid p-py-1 ">
-                        <div className="p-col-3">Total Paybale Amount</div>
-                        <div className="p-col-2">Rs. {billSummary?.amount || "-"}</div>
+                    <div className="p-grid p-py-1 bg-grey">
+                        <div className="p-col-3">Total Amount</div>
+                        <div className="p-col-2">Rs. {fetchSummary?.amount || "-"}</div>
                     </div>
                 </motion.div>
             ) : null}
 
-            {billSummary && !changed ? (
-                <motion.div key={billSummary} initial={{ y: 30, opacity: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            {billSummary && !changed && !fetchSummary ? (
+                <motion.div
+                // key={billSummary} initial={{ y: 30, opacity: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+                >
                     <div className="p-d-flex p-jc-between">
                         <div>
                             <h5 className="text-primary ">Bill Summary</h5>
@@ -341,7 +370,7 @@ function BulkPayment() {
             <motion.div key={billSummary} initial={{ y: -30, opacity: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="Table p-mt-4">
                 <div className="Table-row Table-header">
                     <div className="Table-row-item">
-                        <Button icon="pi pi-times" tooltip="Reset All" onClick={(e) => resetRow(null, e)} className="p-button-rounded p-button-danger p-button-text" />
+                        <Button disabled={disabled} icon="pi pi-times" tooltip="Reset All" onClick={(e) => resetRow(null, e)} className="p-button-rounded p-button-danger p-button-text" />
 
                         {/* <Checkbox disabled checked={checked}></Checkbox> */}
                     </div>
@@ -359,7 +388,7 @@ function BulkPayment() {
                     {rows.map((_item, idx) => (
                         <div className={state[idx]?.isDuplicate ? "duplicate-row Table-row" : state[idx]?.error ? "error-row Table-row" : "Table-row"} key={idx}>
                             <div className="Table-row-item" data-header="Status">
-                                <Button icon="pi pi-times" tooltip="Reset Row" onClick={() => resetRow(idx)} className="p-button-rounded p-button-danger p-button-text" />
+                                <Button disabled={disabled} icon="pi pi-times" tooltip="Reset Row" onClick={() => resetRow(idx)} className="p-button-rounded p-button-danger p-button-text" />
                                 {/* {!changed && state[idx]?.additionalDetail?.transactionStatus?.toLowerCase() === "success" ? (
                                     <i style={{ fontSize: "1.4em" }} className="pi pi-check-square icon-success" />
                                 ) : state[idx]?.error && !changed ? (
@@ -371,7 +400,7 @@ function BulkPayment() {
                             <div className="Table-row-item" data-header="Utility">
                                 <Dropdown
                                     value={state[idx]?.utility || false}
-                                    // disabled={billSummary}
+                                    disabled={disabled}
                                     onChange={(e) => {
                                         updateState(e.value, idx, "utility");
                                         getCompaniesByUtility(e.value, idx);
@@ -382,7 +411,7 @@ function BulkPayment() {
                             <div className="Table-row-item" data-header="Company">
                                 <Dropdown
                                     value={state[idx]?.shortName || false}
-                                    // disabled={!state[idx]?.utility || billSummary}
+                                    disabled={disabled}
                                     onChange={(e) => {
                                         updateState(e.value, idx, "shortName");
                                         getCompaniesByUtility(state[idx]?.utility, idx, false);
@@ -392,7 +421,7 @@ function BulkPayment() {
                             </div>
                             <div className="Table-row-item" data-header="Consumer No">
                                 <InputText
-                                    // disabled={billSummary}
+                                    disabled={disabled}
                                     onChange={(e) => {
                                         updateState(e.target.value, idx, "consumerNumber");
                                     }}
@@ -404,7 +433,7 @@ function BulkPayment() {
                                     state[idx]?.additionalDetail?.id
                                 ) : (
                                     <InputText
-                                        // disabled={billSummary}
+                                        disabled={disabled}
                                         onChange={(e) => {
                                             updateState(e.target.value, idx, "mobileNo");
                                         }}
