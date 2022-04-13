@@ -1,0 +1,92 @@
+.Table {
+    overflow: hidden;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: flex;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: column nowrap;
+    -moz-flex-flow: column nowrap;
+    flex-flow: column nowrap;
+    -webkit-justify-content: space-between;
+    -moz-justify-content: space-between;
+    -ms-justify-content: space-between;
+    -o-justify-content: space-between;
+    justify-content: space-between;
+    -ms-flex-pack: justify;
+    font-size: 1rem;
+}
+.duplicate-row {
+    background-color: rgb(248, 213, 218) !important;
+    transition: 500ms;
+}
+.error-row {
+    background-color: rgb(247, 204, 175) !important;
+    transition: 500ms;
+}
+.Table-header {
+    display: none;
+}
+@media (min-width: 500px) {
+    .Table-header {
+        font-weight: 700;
+    }
+}
+.Table-row {
+    width: 100%;
+}
+.row-collection .Table-row {
+    background-color: rgb(248, 247, 247);
+    margin-bottom: 0.5em;
+}
+@media (min-width: 500px) {
+    .Table-row {
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: flex;
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-flow: row nowrap;
+        -moz-flex-flow: row nowrap;
+        flex-flow: row nowrap;
+        align-items: center;
+    }
+}
+
+.Table-row-item {
+    width: 8%;
+}
+.Table-row-item:nth-child(1) {
+    width: 5%;
+}
+@for $i from 1 through 4 {
+    .Table-row-item:nth-child(#{$i + 1}) {
+        width: 20%;
+    }
+}
+
+.Table-row-item:last-child {
+    width: 18%;
+}
+
+.Table-row-item:before {
+    content: attr(data-header);
+    width: 30%;
+    font-weight: 700;
+}
+@media (min-width: 500px) {
+    .Table-row-item {
+        padding: 0.5em;
+    }
+    .Table-row-item:before {
+        content: none;
+    }
+}
+.row-collection {
+    overflow: auto;
+    max-height: 72vh;
+}

@@ -1,0 +1,62 @@
+{
+    "name": "sigma-react",
+    "version": "5.0.0-SNAPSHOT",
+    "homepage": ".",
+    "private": false,
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/primefaces/sigma-react.git"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "@fullcalendar/core": "4.0.2",
+        "@fullcalendar/daygrid": "4.0.1",
+        "@fullcalendar/interaction": "4.0.2",
+        "@fullcalendar/timegrid": "4.0.1",
+        "@reduxjs/toolkit": "^1.7.1",
+        "@zeit/next-css": "^1.0.1",
+        "axios": "^0.24.0",
+        "chart.js": "2.7.3",
+        "classnames": "^2.2.6",
+        "cookie": "^0.4.1",
+        "file-loader": "^6.2.0",
+        "framer-motion": "^5.5.5",
+        "js-cookie": "^3.0.1",
+        "lodash": "^4.17.21",
+        "next": "10",
+        "next-compose-plugins": "^2.2.0",
+        "primeflex": "2.0.0",
+        "primeicons": "4.0.0",
+        "primereact": "^7.1.0",
+        "prismjs": "^1.25.0",
+        "react": "^17.0.2",
+        "react-app-polyfill": "^2.0.0",
+        "react-cookie": "^4.1.1",
+        "react-dom": "^17.0.2",
+        "react-icons": "^4.3.1",
+        "react-otp-input": "^2.4.0",
+        "react-redux": "^7.2.6",
+        "react-router-dom": "^5.2.0",
+        "react-scripts": "4.0.0",
+        "react-toastify": "^8.1.0",
+        "react-transition-group": "^4.4.1",
+        "redux": "^4.1.2",
+        "sass": "^1.48.0",
+        "swr": "^1.1.2",
+        "url-loader": "^4.1.0"
+    },
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start --port=80"
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    },
+    "browserslist": [
+        ">0.2%",
+        "not dead",
+        "not ie <= 11",
+        "not op_mini all"
+    ]
+}
