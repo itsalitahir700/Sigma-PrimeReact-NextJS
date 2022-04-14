@@ -54,7 +54,7 @@
 }
 
 .opt-verification-container {
-    margin-top: 5rem;
+    margin-top: 3rem;
 }
 
 .opt-verification-container h1 {
@@ -68,7 +68,7 @@
     font-size: 1.6rem;
 }
 .code-verification-input {
-    margin: 4rem 1rem;
+    margin: 1rem 2rem 4rem 2rem;
 }
 .code-verification-input div {
     justify-content: space-between;
@@ -126,7 +126,7 @@
 }
 
 .form-input-container .form-input-icon {
-    font-size: 3rem;
+    font-size: 2.5rem;
     color: rgb(126, 126, 126);
 }
 
@@ -135,11 +135,16 @@
     padding: 1rem;
     padding-bottom: 0rem;
     border: none;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
 }
 
 .form-input:focus {
     outline: none;
+}
+
+.show-password-icon {
+    cursor: pointer;
+    font-size: 2rem !important;
 }
 
 .form-button {
@@ -176,4 +181,10 @@
     font-weight: 800;
     text-decoration: none;
     cursor: pointer;
+}
+
+.base {
+    margin-top: 30px !important;
+    margin-bottom: 0px !important;
+    width: 92px !important;
 }

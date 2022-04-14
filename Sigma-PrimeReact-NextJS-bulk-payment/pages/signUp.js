@@ -1,28 +1,26 @@
 import { useState } from "react";
 import { Button } from "primereact/button";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SignUpAction } from "../redux/actions/authAction";
 import { useRouter } from "next/router";
 import * as cookie from "cookie";
 import Cookies from "js-cookie";
-
 import Form, { FormInputWrapper } from "../src/component/Form";
-
 import { HiUser } from "react-icons/hi";
 import { MdOutlinePhoneIphone } from "react-icons/md";
 
 const Login = () => {
+    const router = useRouter();
+    const dispatch = useDispatch();
     const [username, setUsername] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [loading, setloading] = useState(false);
     const [loadingIcon, setloadingIcon] = useState(null);
+    const { loadingSlice } = useSelector((state) => state);
     const [formDataError, setFormDataError] = useState({
         username: "",
         phoneNumber: "",
     });
-    const router = useRouter();
-
-    const dispatch = useDispatch();
 
     const validate = () => {
         let temp = {};
@@ -44,9 +42,8 @@ const Login = () => {
                 deviceId: "03375909244",
             };
             const res = await dispatch(SignUpAction(data));
-            if (res) router.push("/BulkPayment");
+            if (res?.code === 9) router.push("/AccountVerification");
         }
-
         setloading(false);
         setloadingIcon(null);
     };

@@ -1,62 +1,73 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "primereact/button";
 import { useDispatch } from "react-redux";
-import { ResendOTPAction } from "../redux/actions/authAction";
+import { VerifyOTPAction, ResendOTPAction } from "../redux/actions/authAction";
 import { useRouter } from "next/router";
 import * as cookie from "cookie";
 import Cookies from "js-cookie";
 import OtpInput from "react-otp-input";
+import ReactSpinnerTimer from "react-spinner-timer";
 
 const AccountVerification = () => {
-    // const [username, setUsername] = useState("");
-    // const [phoneNumber, setPhoneNumber] = useState("");
+    const dispatch = useDispatch();
+    const router = useRouter();
     const [loading, setloading] = useState(false);
     const [loadingIcon, setloadingIcon] = useState(null);
+    const [refreshSpinner, setRefreshSpinner] = useState(false);
+    const [lapData, setLapData] = useState({});
+    const accountID = Cookies.get("accountId");
     const [formDataError, setFormDataError] = useState({
-        username: "",
-        phoneNumber: "",
+        otp: "",
     });
-    const router = useRouter();
+    const [otp, setOtp] = useState({
+        phone: "",
+        otp: "",
+    });
 
-    const dispatch = useDispatch();
+    const handleOnLapInteraction = (lap) => {
+        setLapData(lap);
+    };
 
-    // const validate = () => {
-    //     let temp = {};
-    //     temp.username = username ? "" : "This field is Required";
-    //     temp.phoneNumber = phoneNumber ? "" : "This field is Required";
-    //     setFormDataError({ ...temp });
-    //     return Object.values(temp).every((x) => x === "");
-    // };
+    const validate = () => {
+        let temp = {};
+        temp.otp = otp.otp ? "" : "This field is Required";
+        setFormDataError({ ...temp });
+        return Object.values(temp).every((x) => x === "");
+    };
 
     const handleLogin = async (e) => {
         e.preventDefault();
         setloading(true);
         setloadingIcon("pi pi-spin pi-spinner");
-        // if (validate()) {
-        //     const data = {
-        //         fullName: username,
-        //         cellPhone: phoneNumber,
-        //         deviceId: "03375909244",
-        //     };
-        //     const res = await dispatch(SignUpAction(data));
-        //     if (res) router.push("/BulkPayment");
-        // }
-
+        if (validate()) {
+            if (accountID) {
+                const data = {
+                    accountId: accountID,
+                    pin: otp.otp,
+                };
+                const res = await dispatch(VerifyOTPAction(data));
+                if (res.code === 2) router.push("/Password");
+            }
+        }
         setloading(false);
         setloadingIcon(null);
     };
-    const [state, setState] = useState({
-        phone: "",
-        otp: "",
-    });
-    const handleChange = (otp) => setState({ otp });
+
+    const handleChange = (otp) => setOtp({ otp });
     const handleResendPassword = async () => {
         const phoneNumber = Cookies.get("phoneNumber");
-        console.log("phoneNumber", phoneNumber);
         if (phoneNumber) {
-            const res = await dispatch(ResendOTPAction(phoneNumber));
+            handleReplay(true);
+            await dispatch(ResendOTPAction(phoneNumber));
         }
     };
+    const handleReplay = () => {
+        setRefreshSpinner(true);
+    };
+
+    useEffect(() => {
+        if (refreshSpinner) setRefreshSpinner(false);
+    }, [refreshSpinner]);
 
     return (
         <div className="login_body">
@@ -68,8 +79,12 @@ const AccountVerification = () => {
                                 <h1>Verfy Mobile Number</h1>
                                 <p>Please enter OTP sent on mobile</p>
                             </center>
+                            <center>
+                                <ReactSpinnerTimer className="spinner" timeInSeconds={60} totalLaps={1} isPaused={false} isRefresh={refreshSpinner} onLapInteraction={(lap) => handleOnLapInteraction(lap)} />
+                            </center>
                             <div className="code-verification-input">
-                                <OtpInput value={state.otp} className="form-otp-input" onChange={handleChange} numInputs={4} separator={<span></span>} />
+                                <OtpInput value={otp.otp} className="form-otp-input" onChange={handleChange} numInputs={4} separator={<span></span>} />
+                                <div className="form-error-msg pt-3">{formDataError.otp}</div>
                             </div>
                             <h2 className="form-links">
                                 if you didn't receive a code?

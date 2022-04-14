@@ -68,7 +68,7 @@ const Login = () => {
                         <div className="forms-control">
                             <h2 className="form-links">
                                 No Account?
-                                <a className="form-link" href="/sign-up">
+                                <a className="form-link" href="/signUp">
                                     Sign up
                                 </a>
                             </h2>
