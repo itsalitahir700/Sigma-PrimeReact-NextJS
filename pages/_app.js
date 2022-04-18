@@ -255,11 +255,11 @@ const App = ({ Component, pageProps, auth, accountBalance }) => {
     const component = <Component {...pageProps} />;
 
     const { pathname } = useRouter();
-
+    const paths = ["/login", "/registration"];
     return (
         <Provider store={store}>
             <ToastContainer transition={Zoom} autoClose={50000} hideProgressBar={true} position="top-center" draggable pauseOnHover />
-            {pathname !== "/Login" ? (
+            {!paths.toLocaleString()?.includes(pathname) ? (
                 <div className={wrapperClass} onClick={onWrapperClick}>
                     <AppTopbar onToggleMenu={onToggleMenu} />
 

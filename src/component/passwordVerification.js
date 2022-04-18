@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { Button } from "primereact/button";
 import { useDispatch } from "react-redux";
-import { CreatePasswordAction } from "../redux/actions/authAction";
+import { CreatePasswordAction } from "../../redux/actions/authAction";
 import { useRouter } from "next/router";
 import * as cookie from "cookie";
-import Form, { FormInputWrapper } from "../src/component/Form";
+import Form, { FormInputWrapper } from "./Form";
 import Cookies from "js-cookie";
 import { FaUnlockAlt } from "react-icons/fa";
 import { BsFillEyeSlashFill } from "react-icons/bs";
 
 import { AiFillEye } from "react-icons/ai";
 
-const Login = () => {
+const PasswordVerification = ({ setRegistrationTab }) => {
     const accountId = Cookies.get("accountId");
     const router = useRouter();
     const dispatch = useDispatch();
@@ -50,7 +50,10 @@ const Login = () => {
                 setpassword("");
                 setConfirmPassword("");
                 const res = await dispatch(CreatePasswordAction(data));
-                if (res?.code === 13) router.push("/login");
+                if (res?.code === 13) {
+                    setRegistrationTab("signup");
+                    router.push("/login");
+                }
             }
         }
         setloading(false);
@@ -94,7 +97,7 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default PasswordVerification;
 
 export async function getServerSideProps(context) {
     const { req } = context;

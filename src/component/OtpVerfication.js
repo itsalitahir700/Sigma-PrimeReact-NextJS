@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { Button } from "primereact/button";
 import { useDispatch } from "react-redux";
-import { VerifyOTPAction, ResendOTPAction } from "../redux/actions/authAction";
+import { VerifyOTPAction, ResendOTPAction } from "../../redux/actions/authAction";
 import { useRouter } from "next/router";
 import * as cookie from "cookie";
 import Cookies from "js-cookie";
 import OtpInput from "react-otp-input";
 import ReactSpinnerTimer from "react-spinner-timer";
 
-const AccountVerification = () => {
+const AccountVerification = ({ setRegistrationTab }) => {
     const dispatch = useDispatch();
     const router = useRouter();
     const [loading, setloading] = useState(false);
@@ -46,7 +46,7 @@ const AccountVerification = () => {
                     pin: otp.otp,
                 };
                 const res = await dispatch(VerifyOTPAction(data));
-                if (res.code === 2) router.push("/Password");
+                if (res.code === 2) setRegistrationTab("passowrd");
             }
         }
         setloading(false);

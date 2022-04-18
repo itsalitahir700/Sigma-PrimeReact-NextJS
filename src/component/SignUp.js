@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { Button } from "primereact/button";
 import { useDispatch, useSelector } from "react-redux";
-import { SignUpAction } from "../redux/actions/authAction";
+import { SignUpAction } from "../../redux/actions/authAction";
 import { useRouter } from "next/router";
 import * as cookie from "cookie";
 import Cookies from "js-cookie";
-import Form, { FormInputWrapper } from "../src/component/Form";
+import Form, { FormInputWrapper } from "./Form";
 import { HiUser } from "react-icons/hi";
 import { MdOutlinePhoneIphone } from "react-icons/md";
 
-const Login = () => {
+const Login = ({ setRegistrationTab }) => {
     const router = useRouter();
     const dispatch = useDispatch();
     const [username, setUsername] = useState("");
@@ -42,7 +42,8 @@ const Login = () => {
                 deviceId: "03375909244",
             };
             const res = await dispatch(SignUpAction(data));
-            if (res?.code === 9) router.push("/AccountVerification");
+            if (res?.code === 9) setRegistrationTab("otp");
+            localStorage.setItem("registration-tab", "otp");
         }
         setloading(false);
         setloadingIcon(null);
