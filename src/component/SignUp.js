@@ -60,7 +60,7 @@ const Login = ({ setRegistrationTab }) => {
                         <small className="form-error-msg">{formDataError?.username}</small>
 
                         <FormInputWrapper label="Mobile Number" Icon={MdOutlinePhoneIphone}>
-                            <input type="text" name="phoneNumber" placeholder="Enter Phone Number" className="form-input" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+                            <input type="text" pattern="[0-9]*" name="phoneNumber" placeholder="Enter Phone Number" className="form-input" value={phoneNumber} onChange={(e) => setPhoneNumber((v) => (e.target.validity.valid ? e.target.value : v))} />
                         </FormInputWrapper>
                         <div>
                             <small className="form-error-msg">{formDataError?.phoneNumber}</small>
